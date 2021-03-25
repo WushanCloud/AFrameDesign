@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <meta content="IE=10.000" http-equiv="X-UA-Compatible">
+        <meta charset=utf-8>
+        <title>登录 </title>  
+    </head> 
+
+    <body>
+    <div class="signin-bg"></div>
+    <div class="signin-container">
+    	<div style="margin: 170px 0px 30px 45px;">
+    		<div style="width: 340px; float: left; display: inline-block;">
+    			<form name="loginform" id="loginform" action="" method="post">
+    				<input type="radio" name="act" value="0">管理员
+    				<input type="radio" name="act" value="1">教师
+    				<input type="radio" name="act" value="2">学生
+    				<div style="margin-top: 25px;"><input name="username" class="signin-txt" id="username" type="text" placeholder="用户编号" value=""></div>
+    				<div style="margin-top: 20px;"><input name="password" class="signin-txt" id="password" type="password" placeholder="密码" value=""></div>
+    				<div style="margin-top: 20px;">
+    					<span class="button default signin-btn" id="signin_btn" onclick="login()">立即登录</span>	
+    					<a class="signin-forget" href="">忘记密码</a>
+    				</div>
+    				<div style="color: rgb(34, 34, 34); margin-top:38px;">还没有账户？您可以在此&nbsp;<a style="color: rgb(228, 87, 61);" href="">注册</a></div>
+    			</form>
+    		</div>
+    		<div class="clear"></div>
+    	</div>
+    </div>
+    </body>
+</html>

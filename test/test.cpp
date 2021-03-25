@@ -11,6 +11,7 @@ void hello(const Request &req, Response &res) {
 int main ()
 {
     Server server;
+    server.set_base_dir("./www");
     server.Get("/", hello);
 
     server.listen("0.0.0.0", 9000);
