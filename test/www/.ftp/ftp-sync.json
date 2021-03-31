@@ -1,0 +1,10 @@
+{
+    "name": "My Server",
+    "host": "192.168.1.115",
+    "protocol": "sftp",
+    "port": 22,
+    "username": "wushan",
+    "password": "1",
+    "remotePath": "/home/wushan/workspace/progame/AFrameDesign/test/www",
+    "uploadOnSave": true
+}
