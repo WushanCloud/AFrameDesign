@@ -1,5 +1,5 @@
 #include "../struct/httplib.h"
-
+#include "controll.cpp"
 
 class login{
     public:
@@ -9,6 +9,7 @@ class login{
         void action();
     private:
         const std::string www = "./www"; 
+        ControllBase * contr_Bi = ControllBase::getInstance(); 
 };
 
 void login::runaction() {
@@ -17,5 +18,5 @@ void login::runaction() {
     server->listen("0.0.0.0", 19999);
 }
 void login::action() {
-    //server->Get();
+    //server->Get("R(.*)", );
 }
