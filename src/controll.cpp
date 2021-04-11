@@ -3,7 +3,7 @@
 
 #include <string>
 #include <unordered_map>
-
+#include "../struct/httplib.h"
 using namespace std;
 
 typedef void* (*function_ptr) (const httplib::Request& req, httplib::Response& res);
@@ -28,7 +28,7 @@ public:
         return fun->second;
     }
 
-private:
+protected:
     unordered_map<string, function_ptr> m;
     ControllBase() {
         //std::cout << "constructor called!" << std::endl;
@@ -37,6 +37,8 @@ private:
 
 class GetControll : public ControllBase
 {
+public:
+    GetControll();
 };
 class PostControll : public ControllBase
 {
