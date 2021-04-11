@@ -6,7 +6,7 @@
 
 using namespace std;
 
-typedef void* (*function_ptr) ();
+typedef void* (*function_ptr) (const httplib::Request& req, httplib::Response& res);
 
 class ControllBase
 {
@@ -35,11 +35,17 @@ private:
     }
 };
 
-class Controll : public ControllBase 
+class GetControll : public ControllBase
 {
-public:
-
-
+};
+class PostControll : public ControllBase
+{
+};
+class PutControll : public ControllBase
+{
+};
+class DeleteControll : public ControllBase
+{
 };
 
 #endif // !_CONTROLL_CPP
