@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include "../struct/httplib.h"
+#include "../struct/log.hpp"
 using namespace std;
 
 typedef void* (*function_ptr) (const httplib::Request& req, httplib::Response& res);
