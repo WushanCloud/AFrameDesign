@@ -1,4 +1,4 @@
-#include "src/login.cpp"
+#include "src/login.h"
 
 int main() {
     login *my_login = new login;

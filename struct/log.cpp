@@ -1,21 +1,7 @@
 #ifndef _LOG_HPP
 #define _LOG_HPP
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <ctime>
 
-using namespace std;
-namespace logspace{
-
-/**
- * 日志类
- * 功能：把文本写入指定文件
- **/
-class Log{
-    public:
-        bool GeneralLog(string path_name, string str, string author = "");
-};
+#include "log.h"
 
 bool Log::GeneralLog(string path_name, string str, string author) {
     ofstream ofs;
@@ -34,6 +20,5 @@ bool Log::GeneralLog(string path_name, string str, string author) {
     }
     ofs.close();
     return true;
-}
 }
 #endif // _LOG_HPP
