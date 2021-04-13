@@ -7,7 +7,7 @@
 #include "../struct/log.h"
 
 #include "./controller/student.h"
-
+#include "./controller/other.h"
 using namespace std;
 
 typedef void* (*function_ptr) (const httplib::Request& req, httplib::Response& res);
@@ -40,14 +40,23 @@ public:
 
 class PostControll : public ControllBase
 {
+    PostControll();
+public:
+    static PostControll* getInstance();
 };
 
 class PutControll : public ControllBase
 {
+    PutControll();
+public:
+    static PutControll* getInstance();
 };
 
 class DeleteControll : public ControllBase
 {
+    DeleteControll();
+public:
+    static DeleteControll* getInstance();
 };
 
 #endif // !_CONTROLL_H

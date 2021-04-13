@@ -16,23 +16,77 @@ void login::action() {
 }
 
 void GetFunction(const httplib::Request& req, httplib::Response& res) {
+    cout << req.method << endl;
     string function_name = req.path.substr(1);
     cout << function_name << endl;
+    string err_str = req.method + " " + function_name + "\n" + req.body;
+    for (auto it = req.params.begin(); it != req.params.end(); it++) {
+        err_str += "\n" + it->first + "=" + it->second;
+    }
     Log logerr;
-    logerr.GeneralLog(ERR_LOG_PATH, "get"+function_name);
+    logerr.GeneralLog(LOG_PATH, err_str);
+
     function_ptr function = GetControll::getInstance()->get_mod(function_name);
-    cout << "1" << endl;
+    if (function == nullptr) {
+        logerr.GeneralLog(ERR_LOG_PATH, err_str);
+        function = GetControll::getInstance()->get_mod("other");
+        return ;
+    }
     function(req, res);
-    cout << "2" << endl;
 }
 void PostFunction(const httplib::Request& req, httplib::Response& res) {
+    cout << req.method << endl;
+    string function_name = req.path.substr(1);
+    cout << function_name << endl;
+    string err_str = req.method + " " + function_name + "\n" + req.body;
+    for (auto it = req.params.begin(); it != req.params.end(); it++) {
+        err_str += "\n" + it->first + "=" + it->second;
+    }
+    Log logerr;
+    logerr.GeneralLog(LOG_PATH, err_str);
 
+    function_ptr function = PostControll::getInstance()->get_mod(function_name);
+    if (function == nullptr) {
+        logerr.GeneralLog(ERR_LOG_PATH, err_str);
+        return ;
+    }
+    function(req, res); 
 }
 void PutFunction(const httplib::Request& req, httplib::Response& res) {
+    cout << req.method << endl;
+    string function_name = req.path.substr(1);
+    cout << function_name << endl;
+    string err_str = req.method + " " + function_name + "\n" + req.body;
+    for (auto it = req.params.begin(); it != req.params.end(); it++) {
+        err_str += "\n" + it->first + "=" + it->second;
+    }
+    Log logerr;
+    logerr.GeneralLog(LOG_PATH, err_str);
 
+    function_ptr function = PutControll::getInstance()->get_mod(function_name);
+    if (function == nullptr) {
+        logerr.GeneralLog(ERR_LOG_PATH, err_str);
+        return ;
+    }
+    function(req, res); 
 }
 void DeleteFunction(const httplib::Request& req, httplib::Response& res) {
+    cout << req.method << endl;
+    string function_name = req.path.substr(1);
+    cout << function_name << endl;
+    string err_str = req.method + " " + function_name + "\n" + req.body;
+    for (auto it = req.params.begin(); it != req.params.end(); it++) {
+        err_str += "\n" + it->first + "=" + it->second;
+    }
+    Log logerr;
+    logerr.GeneralLog(LOG_PATH, err_str);
 
+    function_ptr function = DeleteControll::getInstance()->get_mod(function_name);
+    if (function == nullptr) {
+        logerr.GeneralLog(ERR_LOG_PATH, err_str);
+        return ;
+    }
+    function(req, res); 
 }
 
 #endif // _LOGIN_CPP

@@ -6,11 +6,8 @@
 bool Log::GeneralLog(const string& path_name, const string& str, string author) {
     ofstream ofs;
     time_t now;
-    ofs.open(path_name, ios::out | ios::app);
-    if (!ofs.is_open()) {
-        perror("open Log file false!");
-        return false;
-    }
+    cout << "log+1" << endl;
+    ofs.open(path_name, ios::app);
     struct tm * timeinfo;
     time(&now);
     timeinfo = localtime(&now);

@@ -3,7 +3,8 @@
 
 #include "controll.h"
 
-#define ERR_LOG_PATH "../../log/getfunction.log"
+#define LOG_PATH "../log/function.log"
+#define ERR_LOG_PATH "../log/err_function.log"
 
 void GetFunction(const httplib::Request& req, httplib::Response& res);
 void PutFunction(const httplib::Request& req, httplib::Response& res);

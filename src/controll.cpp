@@ -17,6 +17,9 @@ void ControllBase::push_mod(const string& function_name, function_ptr func_ptr) 
 
 function_ptr ControllBase::get_mod(string function_name) {
     auto fun = m.find(function_name);
+    if (fun == m.end()) {
+        return nullptr;
+    }
     return fun->second;
 }
 
@@ -25,11 +28,33 @@ GetControll* GetControll::getInstance() {
     return instance;
 }
 
-
-GetControll::GetControll(){
-          cout << "GetControll" << endl;
-                PUSH_MOD(get_student_name);
-                  
+PostControll* PostControll::getInstance() {
+    static PostControll* instance = new PostControll;
+    return instance;
 }
 
+PutControll* PutControll::getInstance() {
+    static PutControll* instance = new PutControll;
+    return instance;
+}
+
+DeleteControll* DeleteControll::getInstance() {
+    static DeleteControll* instance = new DeleteControll;
+    return instance;
+}
+
+GetControll::GetControll(){
+    PUSH_MOD(get_student_name);
+    PUSH_MOD(other);              
+}
+
+PostControll::PostControll(){
+    PUSH_MOD(get_pages);
+}
+
+PutControll::PutControll(){
+}
+
+DeleteControll::DeleteControll(){
+}
 #endif // !_CONTROLL_CPP
