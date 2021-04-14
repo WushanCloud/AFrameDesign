@@ -17,9 +17,9 @@ bool Log::GeneralLog(const string& path_name, const string& str, string author) 
     string s = asctime(timeinfo);
     s.pop_back();
     if (author != "") {
-        ofs << s << " " << author << " "<< str  << endl;
+        ofs << s << " [" << __FILE__ << "]: " << __LINE__  << " " << author << " "<< str  << endl;
     } else {
-        ofs << s << " " << str  << endl;
+        ofs << s << " [" << __FILE__ << "]: " << __LINE__  << " " << str  << endl;
     }
     ofs.close();
     return true;
