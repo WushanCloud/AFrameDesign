@@ -6,7 +6,6 @@
 #include <cstring>
 #include <ctime>
 #include <openssl/md5.h>
-#include "myredis.h"
 
 /**
  * 生成Token令牌：
