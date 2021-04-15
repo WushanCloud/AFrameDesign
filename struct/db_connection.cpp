@@ -64,6 +64,11 @@ MYSQL_ROW DBconnect::MysqlFetchRow(MYSQL_RES* res)
     return mysql_fetch_row(res);
 }
 
+MYSQL_FIELD* DBconnect::MysqlFetchFields(MYSQL_RES* res)
+{
+    return mysql_fetch_fields(res);
+}
+
 bool DBconnect::MysqlFreeResult(MYSQL_RES* res)
 {
     mysql_free_result(res);

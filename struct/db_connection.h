@@ -20,7 +20,7 @@ class DBconnect
 {
 public:
     // 数据库的初始化，链接
-    DBconnect(const std::string& db_name);
+    DBconnect(const std::string& db_name = "teachSystem");
     // 数据库语句执行
     bool MysqlQuery(const std::string& sql);
     // 获取执行结果集
@@ -31,6 +31,8 @@ public:
     int MysqlNumRow(MYSQL_RES* res);
     // 获取一行结果
     MYSQL_ROW MysqlFetchRow(MYSQL_RES* res);
+    // 获取结果集的数据表表头
+    MYSQL_FIELD* MysqlFetchFields(MYSQL_RES* res);
     // 释放结果集
     bool MysqlFreeResult(MYSQL_RES* res);
     

@@ -2,8 +2,9 @@
 
 Token::Token(const std::string user_type, const std::string user_id) {
     this->src_string.clear();
-    int str_num = std::stoi(user_type + user_id);
-    this->src_string = std::to_string(str_num + time(NULL));
+    this->src_string += user_type;
+    this->src_string += user_id;
+    this->src_string += std::to_string(time(NULL));
 }
 
 bool Token::SumMD5() {
