@@ -11,6 +11,10 @@ void other(const httplib::Request& req, httplib::Response& res) {
     res.set_content("hello", "text/plain");
 }
 
+int check_user(const std::string& user_type, const std::string& user_id, const std::string & user_passwd) {
+    
+}
+
 void get_pages(const httplib::Request& req, httplib::Response& res) {
     std::cout << 1 << std::endl;
     int user_type = stoi(req.get_param_value("usertype"));

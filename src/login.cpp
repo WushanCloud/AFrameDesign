@@ -89,4 +89,26 @@ void DeleteFunction(const httplib::Request& req, httplib::Response& res) {
     function(req, res); 
 }
 
+bool LoginToken(const httplib::Request& req, httplib::Response& res) {
+    Log logerr;
+    string err_str;
+    // 检测账号密码是否正确
+    Json::Reader reader;
+    Json::Value value;
+    bool ret = reader.parse(req.body, value);
+    if (ret == false) {
+        perror("LoginToken：Json：");
+        logerr.GeneralLog(ERR_LOG_PATH, err_str + "LoginToken Json 解析失败 : " + req.body.c_str());
+        return false;
+    }
+
+
+    string user_id = 
+    // 为正确的账号密码生成Token，并返回给浏览器
+    
+}
+
+bool CheckToken(const httplib::Request& req, httplib::Response& res);
+
+
 #endif // _LOGIN_CPP

@@ -7,6 +7,7 @@
 #include <vector>
 #include <mysql/mysql.h>
 #include <jsoncpp/json/json.h>
+#include <mutex>
 
 #include "log.h"
 
@@ -40,6 +41,8 @@ private:
     string db_name;
 
     MYSQL* mysql;
+
+    std::mutex _mutex;
 
     Log log;
 
