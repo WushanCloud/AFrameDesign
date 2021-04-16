@@ -49,7 +49,6 @@ GetControll::GetControll(){
 }
 
 PostControll::PostControll(){
-    PUSH_MOD(get_pages);
 }
 
 PutControll::PutControll(){

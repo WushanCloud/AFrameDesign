@@ -4,7 +4,7 @@
 #include <map>
 #include "../../struct/db_connection.h"
 
-void trim(string& s);
+void trim(std::string& s);
 /**
  * 根据userID获取相应信息
  */

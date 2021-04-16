@@ -38,13 +38,12 @@ public:
     
     ~DBconnect();
 
-private:
+    std::mutex _mutex;
 
+private:
     string db_name;
 
     MYSQL* mysql;
-
-    std::mutex _mutex;
 
     Log log;
 

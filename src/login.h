@@ -5,6 +5,7 @@
 #include "../struct/token.h"
 #include "../struct/myredis.h"
 #include <jsoncpp/json/json.h>
+#include "../struct/myredis.h"
 
 #define LOG_PATH "../log/function.log"
 #define ERR_LOG_PATH "../log/err_function.log"

@@ -11,8 +11,21 @@ void other(const httplib::Request& req, httplib::Response& res) {
     res.set_content("hello", "text/plain");
 }
 
-int check_user(const std::string& user_type, const std::string& user_id, const std::string & user_passwd) {
-    
+int check_user(const std::string& user_type, const std::string& user_number, const std::string & user_passwd) {
+    if (user_type != "2") {
+        return 1;
+    }
+    Student student;
+    std::string check_passwd = student.get_passwd_by_number(user_number);
+    if (check_passwd == "0" || check_passwd == "1") {
+        return 1;
+    }
+    if (check_passwd == user_passwd) {
+        return 0;
+    }
+    else {
+        return 2;
+    }
 }
 
 void get_pages(const httplib::Request& req, httplib::Response& res) {

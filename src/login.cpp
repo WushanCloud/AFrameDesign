@@ -19,13 +19,11 @@ void GetFunction(const httplib::Request& req, httplib::Response& res) {
     cout << req.method << endl;
     string function_name = req.path.substr(1);
     cout << function_name << endl;
-    string err_str = req.method + " " + function_name + "\n" + req.body;
-    for (auto it = req.params.begin(); it != req.params.end(); it++) {
-        err_str += "\n" + it->first + "=" + it->second;
-    }
+    string err_str = req.method + " " + function_name + " " + req.body;
     Log logerr;
     logerr.GeneralLog(LOG_PATH, err_str);
 
+    CheckToken(req, res);
     function_ptr function = GetControll::getInstance()->get_mod(function_name);
     if (function == nullptr) {
         logerr.GeneralLog(ERR_LOG_PATH, err_str);
@@ -37,13 +35,19 @@ void GetFunction(const httplib::Request& req, httplib::Response& res) {
 void PostFunction(const httplib::Request& req, httplib::Response& res) {
     cout << req.method << endl;
     string function_name = req.path.substr(1);
+    cout << req.body << endl;
     cout << function_name << endl;
-    string err_str = req.method + " " + function_name + "\n" + req.body;
-    for (auto it = req.params.begin(); it != req.params.end(); it++) {
-        err_str += "\n" + it->first + "=" + it->second;
-    }
+    string err_str = req.method + " " + function_name + " " + req.body;
     Log logerr;
     logerr.GeneralLog(LOG_PATH, err_str);
+
+    // 登录逻辑
+    if (function_name == "login") {
+        LoginToken(req, res);
+        return ;
+    } else {
+        CheckToken(req, res);
+    }
 
     function_ptr function = PostControll::getInstance()->get_mod(function_name);
     if (function == nullptr) {
@@ -56,10 +60,7 @@ void PutFunction(const httplib::Request& req, httplib::Response& res) {
     cout << req.method << endl;
     string function_name = req.path.substr(1);
     cout << function_name << endl;
-    string err_str = req.method + " " + function_name + "\n" + req.body;
-    for (auto it = req.params.begin(); it != req.params.end(); it++) {
-        err_str += "\n" + it->first + "=" + it->second;
-    }
+    string err_str = req.method + " " + function_name + " " + req.body;
     Log logerr;
     logerr.GeneralLog(LOG_PATH, err_str);
 
@@ -74,10 +75,7 @@ void DeleteFunction(const httplib::Request& req, httplib::Response& res) {
     cout << req.method << endl;
     string function_name = req.path.substr(1);
     cout << function_name << endl;
-    string err_str = req.method + " " + function_name + "\n" + req.body;
-    for (auto it = req.params.begin(); it != req.params.end(); it++) {
-        err_str += "\n" + it->first + "=" + it->second;
-    }
+    string err_str = req.method + " " + function_name + " " + req.body;
     Log logerr;
     logerr.GeneralLog(LOG_PATH, err_str);
 
@@ -92,23 +90,59 @@ void DeleteFunction(const httplib::Request& req, httplib::Response& res) {
 bool LoginToken(const httplib::Request& req, httplib::Response& res) {
     Log logerr;
     string err_str;
-    // 检测账号密码是否正确
+    // 解析账号密码
+    Json::Reader reader;
+    Json::Value value;
+    cout << "LoginToken 函数内："<< req.body<< endl;
+    bool ret = reader.parse(req.body, value);
+    if (ret == false) {
+        logerr.GeneralLog(ERR_LOG_PATH, err_str + "LoginToken Json 解析失败 : " + req.body.c_str());
+        return false;
+    }
+    // 验证账号密码是否正确
+    std::string user_type = value["user_type"].asString();
+    std::string user_number = value["user_number"].asString();
+    std::string user_passwd = value["user_passwd"].asString();
+    int check_num = check_user(user_type, user_number, user_passwd);
+    if (check_num == 0) {
+        // 为正确的账号密码生成Token，并返回给浏览器
+        Token token(user_type, user_number);
+        std::cout << token.GetToken() << std::endl;
+        res.set_header("Set-Cookie", token.GetToken().c_str());
+        res.set_header("Content-Type", "application/json");
+        res.set_redirect("index2.html");
+        //登录信息注册到redis
+        Redis redis;
+        std::string command = "hset " + token.GetToken() + " user_type " + user_type;
+        redisReply* reply = redis.Command(command);
+        if (reply->integer != 1) {
+            return false;
+        }
+        redis.Command("hset " + token.GetToken() + " user_number " + user_number);
+        redis.Command("expire " + token.GetToken() + " 3600");
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool CheckToken(const httplib::Request& req, httplib::Response& res) {
+    Log logerr;
+    string err_str;
     Json::Reader reader;
     Json::Value value;
     bool ret = reader.parse(req.body, value);
     if (ret == false) {
-        perror("LoginToken：Json：");
         logerr.GeneralLog(ERR_LOG_PATH, err_str + "LoginToken Json 解析失败 : " + req.body.c_str());
         return false;
     }
+    std::cout << "check_token" << std::endl;
+    std::cout << req.get_header_value_count("Set-Cookie") << std::endl;
+    std::cout << req.get_header_value("Set-Cookie") << std::endl;
+    std::cout << "check_token end" << std::endl;
 
-
-    string user_id = 
-    // 为正确的账号密码生成Token，并返回给浏览器
-    
+    return true;
 }
-
-bool CheckToken(const httplib::Request& req, httplib::Response& res);
 
 
 #endif // _LOGIN_CPP
