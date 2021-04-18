@@ -12,19 +12,27 @@ void other(const httplib::Request& req, httplib::Response& res) {
 }
 
 int check_user(const std::string& user_type, const std::string& user_number, const std::string & user_passwd) {
-    if (user_type != "2") {
+    std::string check_passwd;
+    if (user_type == "2") {
+        Student student;
+        check_passwd = student.get_passwd_by_number(user_number);
+    } else if (user_type == "1") { // 教师
+        Teacher teacher;
+        check_passwd = teacher.get_passwd_by_number(user_number);
+    } else if (user_type == "0") { // 管理员
+        Admin admin;
+        check_passwd = admin.get_passwd_by_number(user_number);
+    } else {
         return 1;
     }
-    Student student;
-    std::string check_passwd = student.get_passwd_by_number(user_number);
     if (check_passwd == "0" || check_passwd == "1") {
-        return 1;
+        return 1;   // 账户不存在，或sql出错
     }
     if (check_passwd == user_passwd) {
-        return 0;
+        return 0;   // 登陆成功
     }
     else {
-        return 2;
+        return 2;   // 密码错误
     }
 }
 

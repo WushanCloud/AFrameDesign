@@ -3,7 +3,7 @@
 std::string Student::get_passwd_by_number(const std::string& student_number)
 {
 	std::lock_guard<std::mutex> lock(mysql_db._mutex);
-    std::string student_num =student_number;
+    std::string student_num = student_number;
     trim(student_num);
 	std::string sql = "select student_passwd from student where student_number = " + student_num;
 	mysql_db.MysqlQuery(sql);
@@ -79,4 +79,90 @@ void trim(std::string& s) {
     string blanks("\f\v\r\t\n ");
     s.erase(0, s.find_first_not_of(blanks));
     s.erase(s.find_last_not_of(blanks) + 1);
+}
+
+std::string Teacher::get_passwd_by_number(const std::string& teacher_number)
+{
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::string sql = "select teacher_passwd from teacher where teacher_number = " + teacher_number;
+	mysql.MysqlQuery(sql);
+	MYSQL_RES* res = mysql.MysqlResult();
+	if (res == nullptr) {
+		return "0";
+	}
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return "1";
+	}
+	MYSQL_ROW row;
+	row = mysql.MysqlFetchRow(res);
+	mysql.MysqlFreeResult(res);
+	return row[0];
+}
+
+std::map<std::string, std::string> Teacher::get_info_by_number(const std::string& teacher_number)
+{
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::map<std::string, std::string> m_ss;
+	std::string sql = "select * from teacher where teacher_number = " + teacher_number;
+	mysql.MysqlQuery(sql);
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return m_ss;
+	}
+	MYSQL_ROW row;
+	row = mysql.MysqlFetchRow(res);
+	mysql.MysqlFreeResult(res);
+
+	MYSQL_FIELD* fields;
+	unsigned int num_fields = mysql.MysqlNumFields(res);
+	fields = mysql_fetch_fields(res);
+	for (unsigned int i = 0; i < num_fields; i++) {
+		m_ss[fields[i].name] = row[i];
+	}
+	return m_ss;
+}
+
+std::vector<std::string> Teacher::get_class_by_id(const std::string& teacher_id)
+{
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::vector<std::string> v_s;
+	std::string sql = "SELECT class_id FROM teacher_class where teacher_id = " + teacher_id;
+	mysql.MysqlQuery(sql);
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return v_s;
+	}
+	MYSQL_ROW row;
+	for (int i = 0; i < len; i++) {
+		row = mysql.MysqlFetchRow(res);
+		v_s.push_back(row[0]);
+	}
+	mysql.MysqlFreeResult(res);
+	return v_s;
+}
+
+std::string Admin::get_passwd_by_number(const std::string& admin_number)
+{
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::string sql = "select admin_passwd from admin where admin_number = " + admin_number;
+	mysql.MysqlQuery(sql);
+	MYSQL_RES* res = mysql.MysqlResult();
+	if (res == nullptr) {
+		return "0";
+	}
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return "1";
+	}
+	MYSQL_ROW row;
+	row = mysql.MysqlFetchRow(res);
+	mysql.MysqlFreeResult(res);
+	return row[0];
 }
