@@ -38,6 +38,7 @@
 <div class="copyright">
 	<p>2021 软件工程1703班 李振中 毕业设计项目</p>
 </div>
+
 </div>
 <script>
 	var app = new Vue({
@@ -56,8 +57,14 @@
 					dataType:"json",
 					context:this,
 					data:JSON.stringify(this.$data),
-					success:function(result, status) {
-						console.log(result);
+					success:function(result,status) {
+						if (result.result == "0") {
+							if (this.$data.user_type == "2") {
+								window.location.href='index2.html';
+							}
+						} else {
+							alert('账户或密码错误');
+						}
 					}
 				})
 			}
