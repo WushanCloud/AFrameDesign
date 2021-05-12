@@ -34,6 +34,9 @@ public:
 
 	// 根据老师id获取老师的课程信息
 	std::vector<std::string> get_class_by_id(const std::string& student_id);
+
+    // 添加一位教师
+    bool add_teacher(const std::string& teacher_number, const std::string& teacher_name, const std::string& teacher_passwd);
 };
 
 class Admin {

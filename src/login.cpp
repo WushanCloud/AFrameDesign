@@ -23,9 +23,9 @@ void GetFunction(const httplib::Request& req, httplib::Response& res) {
     Log logerr;
     logerr.GeneralLog(LOG_PATH, err_str);
     
-        if (CheckToken(req, res) == false) {
-            return ;
-        }
+    //    if (CheckToken(req, res) == false) {
+    //        return ;
+    //    }
     function_ptr function = GetControll::getInstance()->get_mod(function_name);
     if (function == nullptr) {
         logerr.GeneralLog(ERR_LOG_PATH, err_str);
@@ -48,9 +48,9 @@ void PostFunction(const httplib::Request& req, httplib::Response& res) {
         LoginToken(req, res);
         return ;
     } else {
-        if (CheckToken(req, res) == false) {
-            return ;
-        }
+    //    if (CheckToken(req, res) == false) {
+    //        return ;
+    //    }
     }
 
     function_ptr function = PostControll::getInstance()->get_mod(function_name);
@@ -68,9 +68,9 @@ void PutFunction(const httplib::Request& req, httplib::Response& res) {
     Log logerr;
     logerr.GeneralLog(LOG_PATH, err_str);
 
-        if (CheckToken(req, res) == false) {
-            return ;
-        }
+   //     if (CheckToken(req, res) == false) {
+   //         return ;
+   //     }
     function_ptr function = PutControll::getInstance()->get_mod(function_name);
     if (function == nullptr) {
         logerr.GeneralLog(ERR_LOG_PATH, err_str);
@@ -86,9 +86,9 @@ void DeleteFunction(const httplib::Request& req, httplib::Response& res) {
     Log logerr;
     logerr.GeneralLog(LOG_PATH, err_str);
 
-        if (CheckToken(req, res) == false) {
-            return ;
-        }
+   //     if (CheckToken(req, res) == false) {
+   //         return ;
+   //     }
     function_ptr function = DeleteControll::getInstance()->get_mod(function_name);
     if (function == nullptr) {
         logerr.GeneralLog(ERR_LOG_PATH, err_str);

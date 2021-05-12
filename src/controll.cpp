@@ -50,6 +50,7 @@ GetControll::GetControll(){
 }
 
 PostControll::PostControll(){
+    PUSH_MOD(add_teacher);
 }
 
 PutControll::PutControll(){

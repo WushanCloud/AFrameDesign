@@ -147,6 +147,16 @@ std::vector<std::string> Teacher::get_class_by_id(const std::string& teacher_id)
 	return v_s;
 }
 
+bool Teacher::add_teacher(const std::string& teacher_number, const std::string& teacher_name, const std::string& teacher_passwd) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+    std::string sql = "insert into teacher values('','" + teacher_number + "', '" + teacher_name + "', '" + teacher_passwd + "')";
+	int ret = mysql.MysqlQuery(sql);
+	if (ret == 0) {
+		return true;
+	}
+    return false;
+}
+
 std::string Admin::get_passwd_by_number(const std::string& admin_number)
 {
 	std::lock_guard<std::mutex> lock(mysql._mutex);
