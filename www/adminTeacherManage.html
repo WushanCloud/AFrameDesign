@@ -48,15 +48,13 @@
 				</thead>
 				<tbody>
 					
-					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="姓名" required></td>
-					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="教师编号" required></td>
-					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="教师密码" required></td>
-
+					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="姓名" ></td>
+					<td><input class="am-form-field" type="text" v-model="teacher_number" value="" placeholder="教师编号" ></td>
+					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="教师密码" ></td>
 					<td>
-						<button type="button" class="layui-btn layui-btn-sm">
+						<button type="button" v-on:click="submit1" class="layui-btn layui-btn-sm">
 						  <i class="layui-icon">&#xe608;</i> 添加
 						</button>
-						
 					</td>
 					
 				</tbody>
@@ -119,6 +117,30 @@
 			</div>
 		</div>
 	</div>
-	
+	<script>
+		var app = new Vue({
+			el:'#app_admin_teacher',
+			data:{
+				teacher_name:"",
+				teacher_number:"",
+				teacher_passwd:""
+			},
+			methods:{
+				submit1:function(){
+					$.ajax({
+						url:"login",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result, status) {
+							
+						}
+					})
+				}
+			}
+		});
+	</script>
 	</body>
 </html>

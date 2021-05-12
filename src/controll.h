@@ -7,6 +7,8 @@
 #include "../struct/log.h"
 
 #include "./controller/student.h"
+#include "./controller/admin.h"
+#include "./controller/teacher.h"
 #include "./controller/other.h"
 using namespace std;
 

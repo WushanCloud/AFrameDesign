@@ -23,7 +23,9 @@ void GetFunction(const httplib::Request& req, httplib::Response& res) {
     Log logerr;
     logerr.GeneralLog(LOG_PATH, err_str);
     
-    //CheckToken(req, res);
+        if (CheckToken(req, res) == false) {
+            return ;
+        }
     function_ptr function = GetControll::getInstance()->get_mod(function_name);
     if (function == nullptr) {
         logerr.GeneralLog(ERR_LOG_PATH, err_str);
@@ -46,7 +48,9 @@ void PostFunction(const httplib::Request& req, httplib::Response& res) {
         LoginToken(req, res);
         return ;
     } else {
-        //CheckToken(req, res);
+        if (CheckToken(req, res) == false) {
+            return ;
+        }
     }
 
     function_ptr function = PostControll::getInstance()->get_mod(function_name);
@@ -64,6 +68,9 @@ void PutFunction(const httplib::Request& req, httplib::Response& res) {
     Log logerr;
     logerr.GeneralLog(LOG_PATH, err_str);
 
+        if (CheckToken(req, res) == false) {
+            return ;
+        }
     function_ptr function = PutControll::getInstance()->get_mod(function_name);
     if (function == nullptr) {
         logerr.GeneralLog(ERR_LOG_PATH, err_str);
@@ -79,6 +86,9 @@ void DeleteFunction(const httplib::Request& req, httplib::Response& res) {
     Log logerr;
     logerr.GeneralLog(LOG_PATH, err_str);
 
+        if (CheckToken(req, res) == false) {
+            return ;
+        }
     function_ptr function = DeleteControll::getInstance()->get_mod(function_name);
     if (function == nullptr) {
         logerr.GeneralLog(ERR_LOG_PATH, err_str);
@@ -142,6 +152,7 @@ bool CheckToken(const httplib::Request& req, httplib::Response& res) {
     std::string command = "EXISTS " + token;
     redisReply* ret = redis.Command(command);
     if (ret->integer == 0) {
+        //res.set_redirect("index.html");
         return false;
     }
     return true;

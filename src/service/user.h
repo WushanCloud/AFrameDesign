@@ -41,4 +41,7 @@ class Admin {
 public:
 	// 根据账号获取管理员的密码;
 	std::string get_passwd_by_number(const std::string& student_number);
+
+    // 根据账号获取管理员名字
+    std::string get_name_by_number(const std::string& admin_number);
 };

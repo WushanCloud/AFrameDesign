@@ -45,6 +45,7 @@ DeleteControll* DeleteControll::getInstance() {
 
 GetControll::GetControll(){
     PUSH_MOD(get_student_name);
+    PUSH_MOD(get_admin_name);
     PUSH_MOD(other);              
 }
 

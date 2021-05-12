@@ -166,3 +166,23 @@ std::string Admin::get_passwd_by_number(const std::string& admin_number)
 	mysql.MysqlFreeResult(res);
 	return row[0];
 }
+
+std::string Admin::get_name_by_number(const std::string& admin_number)
+{
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::string sql = "select admin_name from admin where admin_number = " + admin_number;
+	mysql.MysqlQuery(sql);
+	MYSQL_RES* res = mysql.MysqlResult();
+	if (res == nullptr) {
+		return "0";
+	}
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return "1";
+	}
+	MYSQL_ROW row;
+	row = mysql.MysqlFetchRow(res);
+	mysql.MysqlFreeResult(res);
+	return row[0];
+}

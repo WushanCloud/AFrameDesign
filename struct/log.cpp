@@ -25,7 +25,7 @@ bool Log::GeneralLog(const string& path_name, const string& str, string author) 
     return true;
 }
 
-bool SubLog::GeneralLog(const string& path_name, const string& file, const string& line, const string& str) {
+bool SubLog::GeneralLog(const string& path_name, const string& file, int line, const string& str) {
     ofstream ofs;
     time_t now;
     ofs.open(path_name, ios::out | ios::app);
