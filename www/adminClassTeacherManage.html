@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/admin.css" />
+		<!-- 引入 layui.css -->
+		<link rel="stylesheet" href="css/layui.css">
+		 
+		<!-- 引入 layui.js -->
+		<script src="//unpkg.com/layui@2.6.4/dist/layui.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<title>Layui</title>
+		
+	</head>
+
+	<body>
+	<div id="app_admin_teacher">
+		<div class="admin-content-body">
+			<div class="am-cf am-padding am-padding-bottom-0">
+				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">课程教师绑定</strong><small></small></div>
+			</div>
+	
+			<hr>
+			
+			<div class="am-g">
+				<div>
+					<h1>绑定模块</h1>
+				</div>
+			</div>
+			
+			<table class="layui-table am-table am-table-striped am-table-hover" lay-skin="nob">
+				<colgroup>
+				    <col width="250">
+				    <col width="300">
+				    <col width="300">
+				  </colgroup>
+				<thead>
+					<tr>
+						<th class="table-title">课程编号</th>
+						<th class="table-type">教师编号</th>
+						<th class="table-set">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="课程编号" required></td>
+					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="学生学号" required></td>
+					<td>
+						<button type="button" class="layui-btn layui-btn-sm">
+						  <i class="layui-icon">&#xe608;</i> 添加
+						</button>
+					</td>
+				</tbody>
+			</table>
+			<hr>
+			
+			<div class="am-g">
+				<div>
+					<h1>修改模块</h1><br />
+				</div>
+			</div>
+			
+			<div class="am-u-sm-12 am-u-md-3">
+				<div class="am-input-group am-input-group-sm">
+					<input type="text" class="am-form-field" placeholder="请输入课程编号">
+					<span class="am-input-group-btn">
+						<button class="am-btn am-btn-default" type="button">搜索</button>
+					</span>
+				</div>
+			</div>
+			
+			<div class="am-g">
+				<div class="am-u-sm-12">
+					<form class="am-form">
+						<table class="am-table am-table-striped am-table-hover table-main">
+							<thead>
+								<tr>
+									<th class="table-title">课程名</th>
+									<th class="table-type">课程专业</th>
+									<th class="table-type">课程班级</th>
+									<th class="table-type">课程教师</th>
+									<th class="table-set">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>张三	</td>
+									<td>admin</td>
+									<td>passwd</td>
+									<td>teacher</td>
+									<td>
+										<div class="am-btn-toolbar">
+											<div class="am-btn-group am-btn-group-xs">
+												<button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<hr>
+					</form>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	</body>
+</html>
