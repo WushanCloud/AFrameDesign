@@ -60,45 +60,51 @@ void get_teacher_name(const httplib::Request& req, httplib::Response& res) {
 }
 
 void get_teacher_info_by_name(const httplib::Request& req, httplib::Response& res) {
-    Json::Value value;
+    Json::Value value_r;
+    Json::Value value_w;
     Json::FastWriter writer;
-
-    string name;
-    for (auto it = req.params.begin(); it != req.params.end(); it++) {
-        if (it->first == "teacher_name") {
-            name = it->second;
-            break;
-        }
+    Json::Reader reader;
+    // 获取教师名字
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(TEACHER_LOG, "get_teacher_info_by_name req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
     }
     // 数据库介入
     Teacher teacher;
-    map<string, string> info = teacher.get_info_by_number(name);
-    value["teacher_name"] = info["teacher_number"];
-    value["teacher_number"] = info["teacher_number"];
-    value["teacher_passwd"] = info["teacher_passwd"];
+    map<string, string> info = teacher.get_info_by_name(value_r["teacher_name"].asString());
+    value_w["teacher_name"] = info["teacher_name"];
+    value_w["teacher_number"] = info["teacher_number"];
+    value_w["teacher_passwd"] = info["teacher_passwd"];
+    value_w["result"] = "true";
 
-    res.body = writer.write(value);
+    res.body = writer.write(value_w);
 }
 
 void get_teacher_info_by_number(const httplib::Request& req, httplib::Response& res){
-    Json::Value value;
+    Json::Value value_r;
+    Json::Value value_w;
     Json::FastWriter writer;
-
-    string number;
-    for (auto it = req.params.begin(); it != req.params.end(); it++) {
-        if (it->first == "teacher_number") {
-            number = it->second;
-            break;
-        }
+    Json::Reader reader;
+    // 获取教师名字
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(TEACHER_LOG, "get_teacher_info_by_number req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
     }
     // 数据库介入
     Teacher teacher;
-    map<string, string> info = teacher.get_info_by_number(number);
-    value["teacher_name"] = info["teacher_number"];
-    value["teacher_number"] = info["teacher_number"];
-    value["teacher_passwd"] = info["teacher_passwd"];
+    map<string, string> info = teacher.get_info_by_number(value_r["teacher_number"].asString());
+    value_w["teacher_name"] = info["teacher_name"];
+    value_w["teacher_number"] = info["teacher_number"];
+    value_w["teacher_passwd"] = info["teacher_passwd"];
+    value_w["result"] = "true";
 
-    res.body = writer.write(value);
+    res.body = writer.write(value_w);
 }
 
 void delete_teacher(const httplib::Request& req, httplib::Response& res) {
@@ -129,3 +135,27 @@ void delete_teacher(const httplib::Request& req, httplib::Response& res) {
     res.body = writer.write(value_w);
 }
 
+void update_teacher_passwd(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+
+    // 获取更新密码的教师信息
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(TEACHER_LOG, "update_teacher_passwd req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+    
+    Teacher teacher;
+    ret = teacher.update_passwd(value_r["teacher_number"].asString());
+    if (ret == false) {
+        value_w["result"] = "false";
+    } else {
+        value_w["result"] = "true";
+    }
+    res.body = writer.write(value_w);
+}

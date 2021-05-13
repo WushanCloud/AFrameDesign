@@ -24,4 +24,8 @@ void get_teacher_info_by_number(const httplib::Request& req, httplib::Response& 
 
 // 删除一位教师
 void delete_teacher(const httplib::Request& req, httplib::Response& res);
+
+// 初始化一位教师的密码
+void update_teacher_passwd(const httplib::Request& req, httplib::Response& res);
+
 #endif // _TEACHER_H

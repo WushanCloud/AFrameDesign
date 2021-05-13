@@ -43,6 +43,9 @@ public:
 
     // 删除一位教师
     bool delete_teacher(const std::string& teacher_number, const std::string& teacher_name = "");
+
+    // 初始化教师密码
+    bool update_passwd(const std::string& teacher_number, const std::string& teacher_passwd = "123456");
 };
 
 class Admin {

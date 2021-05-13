@@ -105,7 +105,7 @@ std::map<std::string, std::string> Teacher::get_info_by_number(const std::string
 {
 	std::lock_guard<std::mutex> lock(mysql._mutex);
 	std::map<std::string, std::string> m_ss;
-	std::string sql = "select * from teacher where teacher_number = " + teacher_number;
+	std::string sql = "select * from teacher where teacher_number = '" + teacher_number + "'";
 	mysql.MysqlQuery(sql);
 	MYSQL_RES* res = mysql.MysqlResult();
 	int len = mysql.MysqlNumRow(res);
@@ -129,7 +129,7 @@ std::map<std::string, std::string> Teacher::get_info_by_number(const std::string
 std::map<std::string, std::string> Teacher::get_info_by_name(const std::string& teacher_name) {
 	std::lock_guard<std::mutex> lock(mysql._mutex);
 	std::map<std::string, std::string> m_ss;
-	std::string sql = "select * from teacher where teacher_name = " + teacher_name;
+	std::string sql = "select * from teacher where teacher_name = '" + teacher_name + "'";
 	mysql.MysqlQuery(sql);
 	MYSQL_RES* res = mysql.MysqlResult();
 	int len = mysql.MysqlNumRow(res);
@@ -174,22 +174,23 @@ std::vector<std::string> Teacher::get_class_by_id(const std::string& teacher_id)
 bool Teacher::add_teacher(const std::string& teacher_number, const std::string& teacher_name, const std::string& teacher_passwd) {
 	std::lock_guard<std::mutex> lock(mysql._mutex);
     std::string sql = "insert into teacher values('','" + teacher_number + "', '" + teacher_name + "', '" + teacher_passwd + "')";
-	int ret = mysql.MysqlQuery(sql);
-	if (ret == 0) {
-		return true;
-	}
-    return false;
+	bool ret = mysql.MysqlQuery(sql);
+    return ret;
 }
 
 bool Teacher::delete_teacher(const std::string& teacher_number, const std::string& teacher_name) {
 	std::lock_guard<std::mutex> lock(mysql._mutex);
     (void)teacher_name;
     std::string sql = "delete from teacher where teacher_number = '" + teacher_number + "'";
-	int ret = mysql.MysqlQuery(sql);
-	if (ret == 0) {
-		return true;
-	}
-    return false;
+	bool ret = mysql.MysqlQuery(sql);
+    return ret;
+}
+
+bool Teacher::update_passwd(const std::string& teacher_number, const std::string& teacher_passwd) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+    std::string sql = "update teacher set teacher_passwd = '" + teacher_passwd + "' where teacher_number = '" + teacher_number + "'";
+	bool ret = mysql.MysqlQuery(sql);
+    return ret;
 }
 
 std::string Admin::get_passwd_by_number(const std::string& admin_number)

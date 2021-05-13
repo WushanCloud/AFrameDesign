@@ -47,13 +47,14 @@ GetControll::GetControll(){
     PUSH_MOD(get_student_name);
     PUSH_MOD(get_admin_name);
     PUSH_MOD(get_teacher_name);
-    PUSH_MOD(get_teacher_info_by_name);
-    PUSH_MOD(get_teacher_info_by_number);
     PUSH_MOD(other);              
 }
 
 PostControll::PostControll(){
+    PUSH_MOD(get_teacher_info_by_name);
+    PUSH_MOD(get_teacher_info_by_number);
     PUSH_MOD(add_teacher);
+    PUSH_MOD(update_teacher_passwd);
     PUSH_MOD(delete_teacher);
 }
 

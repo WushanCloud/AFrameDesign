@@ -10,7 +10,10 @@
 
 #define STUDENT_LOG "../log/err_controller.log"
 
+// 获取学生名字
 void get_student_name(const httplib::Request& req, httplib::Response& res); 
 
+// 添加一个学生
+void add_teacher(const httplib::Request& req, httplib::Response& res);
 
 #endif // _STUDENT_H

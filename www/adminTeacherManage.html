@@ -18,7 +18,7 @@
 	</head>
 
 	<body>
-	<div id="app_admin_teacher">
+	<div id="app_admin_teacher1">
 		<div class="admin-content-body">
 			<div class="am-cf am-padding am-padding-bottom-0">
 				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">教师管理</strong><small></small></div>
@@ -60,7 +60,10 @@
 				</tbody>
 			</table>
 			<hr>
-			
+		</div>
+	</div>
+	<div id="app_admin_teacher2">
+		<div class="admin-content-body">	
 			<div class="am-g">
 				<div>
 					<h1>搜索模块</h1><br />
@@ -69,15 +72,15 @@
 			
 			<div class="am-u-sm-12 am-u-md-3">
 				<div class="am-input-group am-input-group-sm">
-					<input type="text" class="am-form-field" placeholder="请输入教师姓名">
+					<input type="text" class="am-form-field" v-model="teacher_name" placeholder="请输入教师姓名">
 					<span class="am-input-group-btn">
-						<button class="am-btn am-btn-default" type="button">搜索</button>
+						<button class="am-btn am-btn-default" type="button" v-on:click="submit2">搜索</button>
 					</span>
 				</div>
 				<div class="am-input-group am-input-group-sm">
-					<input type="text" class="am-form-field" placeholder="或输入教师编号">
+					<input type="text" class="am-form-field" v-model="teacher_number" placeholder="或输入教师编号">
 					<span class="am-input-group-btn">
-						<button class="am-btn am-btn-default" type="button">搜索</button>
+						<button class="am-btn am-btn-default" type="button" v-on:click="submit3">搜索</button>
 					</span>
 				</div>
 			</div>
@@ -96,9 +99,9 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>张三	</td>
-									<td>admin</td>
-									<td>passwd</td>
+									<td>{{teacher_name}}</td>
+									<td>{{teacher_number}}</td>
+									<td>{{teacher_passwd}}</td>
 									<td>
 										<div class="am-btn-toolbar">
 											<div class="am-btn-group am-btn-group-xs">
@@ -118,8 +121,8 @@
 		</div>
 	</div>
 	<script>
-		var app = new Vue({
-			el:'#app_admin_teacher',
+		var app1 = new Vue({
+			el:'#app_admin_teacher1',
 			data:{
 				teacher_name:"",
 				teacher_number:"",
@@ -128,14 +131,56 @@
 			methods:{
 				submit1:function(){
 					$.ajax({
-						url:"login",
+						url:"add_teacher",
 						type:"post",
 						contentType: "application/json", //必须这样写
 						dataType:"json",
 						context:this,
 						data:JSON.stringify(this.$data),
-						success:function(result, status) {
-							
+						success:function(result) {
+							alert(result.result);
+						}
+					})
+				}
+			}
+		});
+		var app2 = new Vue({
+			el:'#app_admin_teacher2',
+			data:{
+				teacher_name:"",
+				teacher_number:"",
+				teacher_passwd:""
+			},
+			methods:{
+				submit2:function(){
+					$.ajax({
+						url:"get_teacher_info_by_name",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+							this.teacher_name = result.teacher_name;
+							this.teacher_number = result.teacher_number;
+							this.teacher_passwd = result.teacher_passwd;
+						}
+					})
+				},
+				submit3:function(){
+					$.ajax({
+						url:"get_teacher_info_by_number",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+							this.teacher_name = result.teacher_name;
+							this.teacher_number = result.teacher_number;
+							this.teacher_passwd = result.teacher_passwd;
 						}
 					})
 				}
