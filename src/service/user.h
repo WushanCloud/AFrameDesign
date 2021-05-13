@@ -19,24 +19,36 @@ public:
 	// 根据学号获取学生信息
 	std::map<std::string, std::string> get_info_by_number(const std::string& student_number);
 
+	// 根据学生名字获取学生信息
+	std::map<std::string, std::string> get_info_by_name(const std::string& student_name);
+
 	// 根据学生id获取学生的课程信息
 	std::vector<std::string> get_class_by_id(const std::string& student_id);
+
+	// 添加学生信息
+	bool add_student(const std::string& student_number, const std::string& student_name, const std::string& student_passwd, const std::string& student_major = "", int student_class = 1703);
+
+	// 删除一位学生
+	bool delete_student(const std::string& student_number, const std::string& student_name = "");
+
+	// 初始化学生密码
+	bool update_passwd(const std::string& student_number, const std::string& student_passwd = "123456");
 };
 
 class Teacher {
 	DBconnect mysql;
 public:
 	// 根据老师编号获取老师的密码;
-	std::string get_passwd_by_number(const std::string& student_number);
+	std::string get_passwd_by_number(const std::string& teacher_number);
 
 	// 根据老师编号获取老师信息
-	std::map<std::string, std::string> get_info_by_number(const std::string& student_number);
+	std::map<std::string, std::string> get_info_by_number(const std::string& teacher_number);
 
 	// 根据老师名字获取老师信息
 	std::map<std::string, std::string> get_info_by_name(const std::string& teacher_name);
 
 	// 根据老师id获取老师的课程信息
-	std::vector<std::string> get_class_by_id(const std::string& student_id);
+	std::vector<std::string> get_class_by_id(const std::string& teacher_id);
 
     // 添加一位教师
     bool add_teacher(const std::string& teacher_number, const std::string& teacher_name, const std::string& teacher_passwd);

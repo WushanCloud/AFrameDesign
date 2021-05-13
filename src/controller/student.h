@@ -14,6 +14,18 @@
 void get_student_name(const httplib::Request& req, httplib::Response& res); 
 
 // 添加一个学生
-void add_teacher(const httplib::Request& req, httplib::Response& res);
+void add_student(const httplib::Request& req, httplib::Response& res);
+
+// 按学生姓名搜索学生
+void get_student_info_by_name(const httplib::Request& req, httplib::Response& res);
+
+// 按学生编号搜索学生
+void get_student_info_by_number(const httplib::Request& req, httplib::Response& res);
+
+// 删除一位学生
+void delete_student(const httplib::Request& req, httplib::Response& res);
+
+// 初始化一位学生的密码
+void update_student_passwd(const httplib::Request& req, httplib::Response& res);
 
 #endif // _STUDENT_H

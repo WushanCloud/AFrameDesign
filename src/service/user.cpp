@@ -1,5 +1,9 @@
 #include "user.h"
 
+/**
+* 学生类方法
+*/
+
 std::string Student::get_passwd_by_number(const std::string& student_number)
 {
 	std::lock_guard<std::mutex> lock(mysql_db._mutex);
@@ -28,7 +32,31 @@ std::map<std::string, std::string> Student::get_info_by_number(const std::string
     std::string student_num =student_number;
     trim(student_num);
 	std::map<std::string, std::string> m_ss;
-	std::string sql = "select * from student where student_number = " + student_num;
+	std::string sql = "select * from student where student_number = '" + student_num + "'";
+	mysql_db.MysqlQuery(sql);
+	MYSQL_RES* res = mysql_db.MysqlResult();
+	int len = mysql_db.MysqlNumRow(res);
+	if (len == 0) {
+		mysql_db.MysqlFreeResult(res);
+		return m_ss;
+	}
+	MYSQL_ROW row;
+	row = mysql_db.MysqlFetchRow(res);
+	mysql_db.MysqlFreeResult(res);
+
+	MYSQL_FIELD* fields;
+	unsigned int num_fields = mysql_db.MysqlNumFields(res);
+	fields = mysql_fetch_fields(res);
+	for (unsigned int i = 0; i < num_fields; i++) {
+		m_ss[fields[i].name] = row[i];
+	}
+	return m_ss;
+}
+
+std::map<std::string, std::string> Student::get_info_by_name(const std::string& student_name) {
+	std::lock_guard<std::mutex> lock(mysql_db._mutex);
+	std::map<std::string, std::string> m_ss;
+	std::string sql = "select * from student where student_name = '" + student_name + "'";
 	mysql_db.MysqlQuery(sql);
 	MYSQL_RES* res = mysql_db.MysqlResult();
 	int len = mysql_db.MysqlNumRow(res);
@@ -72,6 +100,30 @@ std::vector<std::string> Student::get_class_by_id(const std::string& student_id)
 	return v_s;
 }
 
+bool Student::add_student(const std::string& student_number, const std::string& student_name, const std::string& student_passwd, const std::string& student_major, int student_class) {
+    (void)student_major;
+    (void)student_class;
+	std::lock_guard<std::mutex> lock(mysql_db._mutex);
+	std::string sql = "insert into student values('','" + student_number + "', '" + student_name + "', '" + student_passwd + "')";
+	bool ret = mysql_db.MysqlQuery(sql);
+	return ret;
+}
+
+bool Student::delete_student(const std::string& student_number, const std::string& student_name) {
+	std::lock_guard<std::mutex> lock(mysql_db._mutex);
+	(void)student_name;
+	std::string sql = "delete from student where student_number = '" + student_number + "'";
+	bool ret = mysql_db.MysqlQuery(sql);
+	return ret;
+}
+
+bool Student::update_passwd(const std::string& student_number, const std::string& student_passwd) {
+	std::lock_guard<std::mutex> lock(mysql_db._mutex);
+	std::string sql = "update student set student_passwd = '" + student_passwd + "' where student_number = '" + student_number + "'";
+	bool ret = mysql_db.MysqlQuery(sql);
+	return ret;
+}
+
 void trim(std::string& s) {
     if (s.empty()) {
         return;            
@@ -80,6 +132,10 @@ void trim(std::string& s) {
     s.erase(0, s.find_first_not_of(blanks));
     s.erase(s.find_last_not_of(blanks) + 1);
 }
+
+/**
+* 教师类方法
+*/
 
 std::string Teacher::get_passwd_by_number(const std::string& teacher_number)
 {
@@ -192,6 +248,10 @@ bool Teacher::update_passwd(const std::string& teacher_number, const std::string
 	bool ret = mysql.MysqlQuery(sql);
     return ret;
 }
+
+/**
+* 管理员类方法
+*/
 
 std::string Admin::get_passwd_by_number(const std::string& admin_number)
 {
