@@ -126,6 +126,30 @@ std::map<std::string, std::string> Teacher::get_info_by_number(const std::string
 	return m_ss;
 }
 
+std::map<std::string, std::string> Teacher::get_info_by_name(const std::string& teacher_name) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::map<std::string, std::string> m_ss;
+	std::string sql = "select * from teacher where teacher_name = " + teacher_name;
+	mysql.MysqlQuery(sql);
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return m_ss;
+	}
+	MYSQL_ROW row;
+	row = mysql.MysqlFetchRow(res);
+	mysql.MysqlFreeResult(res);
+
+	MYSQL_FIELD* fields;
+	unsigned int num_fields = mysql.MysqlNumFields(res);
+	fields = mysql_fetch_fields(res);
+	for (unsigned int i = 0; i < num_fields; i++) {
+		m_ss[fields[i].name] = row[i];
+	}
+	return m_ss;
+}
+
 std::vector<std::string> Teacher::get_class_by_id(const std::string& teacher_id)
 {
 	std::lock_guard<std::mutex> lock(mysql._mutex);
@@ -150,6 +174,17 @@ std::vector<std::string> Teacher::get_class_by_id(const std::string& teacher_id)
 bool Teacher::add_teacher(const std::string& teacher_number, const std::string& teacher_name, const std::string& teacher_passwd) {
 	std::lock_guard<std::mutex> lock(mysql._mutex);
     std::string sql = "insert into teacher values('','" + teacher_number + "', '" + teacher_name + "', '" + teacher_passwd + "')";
+	int ret = mysql.MysqlQuery(sql);
+	if (ret == 0) {
+		return true;
+	}
+    return false;
+}
+
+bool Teacher::delete_teacher(const std::string& teacher_number, const std::string& teacher_name) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+    (void)teacher_name;
+    std::string sql = "delete from teacher where teacher_number = '" + teacher_number + "'";
 	int ret = mysql.MysqlQuery(sql);
 	if (ret == 0) {
 		return true;

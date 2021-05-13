@@ -13,9 +13,15 @@
 // 添加一个教师
 void add_teacher(const httplib::Request& req, httplib::Response& res);
 
+// 获取教师名字
+void get_teacher_name(const httplib::Request& req, httplib::Response& res);
+
 // 按教师姓名搜索教师
 void get_teacher_info_by_name(const httplib::Request& req, httplib::Response& res);
 
 // 按教师编号搜索教师
 void get_teacher_info_by_number(const httplib::Request& req, httplib::Response& res);
+
+// 删除一位教师
+void delete_teacher(const httplib::Request& req, httplib::Response& res);
 #endif // _TEACHER_H

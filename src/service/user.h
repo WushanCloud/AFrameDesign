@@ -32,11 +32,17 @@ public:
 	// 根据老师编号获取老师信息
 	std::map<std::string, std::string> get_info_by_number(const std::string& student_number);
 
+	// 根据老师名字获取老师信息
+	std::map<std::string, std::string> get_info_by_name(const std::string& teacher_name);
+
 	// 根据老师id获取老师的课程信息
 	std::vector<std::string> get_class_by_id(const std::string& student_id);
 
     // 添加一位教师
     bool add_teacher(const std::string& teacher_number, const std::string& teacher_name, const std::string& teacher_passwd);
+
+    // 删除一位教师
+    bool delete_teacher(const std::string& teacher_number, const std::string& teacher_name = "");
 };
 
 class Admin {
