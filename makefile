@@ -6,7 +6,7 @@ CC=g++
 .PHONY:$(BIN)
 
 $(BIN):$(SRC)
-	$(CC) $^ -o $@ $(LDFLAGS) -lmysqlclient -lpthread -std=c++11 -ljsoncpp -lhiredis -lcrypto
+	$(CC) $^ -o $@ $(LDFLAGS) -lmysqlclient -lpthread -std=c++11 -ljsoncpp -lhiredis -lcrypto 
 
 .PHONY:clean
 clean:

@@ -69,3 +69,27 @@ public:
     // 根据账号获取管理员名字
     std::string get_name_by_number(const std::string& admin_number);
 };
+
+class ClassBase {
+    DBconnect mysql;
+public:
+    // 添加一个班级
+    bool add_class_base(const std::string& class_major, const std::string& class_class);
+
+    // 绑定班级和学号
+    bool add_class_student_base(const std::string& class_base_id, const std::string& student_number);
+
+    // 删除一个班级
+    bool delete_class_base(const std::string& class_id);
+
+    // 通过班级专业和班级班号查班级信息
+	std::map<std::string, std::string> get_info_by_major_class(const std::string& class_major, const std::string& class_class);
+
+    // 通过班级编号查班级信息
+	std::map<std::string, std::string> get_info_by_id(const std::string& class_base_id);
+
+	// 根据班级编号查询班级的学生
+	std::vector<std::string> get_all_student_number_by_id(const std::string& class_base_id);
+
+};
+

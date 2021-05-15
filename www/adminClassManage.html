@@ -40,8 +40,7 @@
 				<thead>
 					<tr>
 						<th class="table-title">课程名</th>
-						<th class="table-type">课程专业</th>
-						<th class="table-type">课程班级</th>
+						<th class="table-type">课程班级编号</th>
 						<th class="table-type">课程简介</th>
 						<th class="table-set">操作</th>
 					</tr>
@@ -49,8 +48,7 @@
 				<tbody>
 					
 					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="课程名" required></td>
-					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="课程专业" required></td>
-					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="课程班级" required></td>
+					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="课程班级编号" required></td>
 					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="课程简介" required></td>
 					<td>
 						<button type="button" class="layui-btn layui-btn-sm">
@@ -122,23 +120,20 @@
 					<tr>
 						<th class="table-title">课程编号</th>
 						<th class="table-title">课程名</th>
-						<th class="table-type">课程专业</th>
-						<th class="table-type">课程班级</th>
+						<th class="table-type">课程班级编号</th>
 						<th class="table-type">课程简介</th>
 						<th class="table-set">操作</th>
 					</tr>
 				</thead>
 				<tbody>
-					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="课程编号" required></td>
+					<td >课程编号	</td>
 					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="课程名" required></td>
-					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="课程专业" required></td>
-					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="课程班级" required></td>
+					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="课程班级编号" required></td>
 					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="课程简介" required></td>
 					<td>
 						<button type="button" class="layui-btn layui-btn-sm">
 						  <i class="layui-icon">&#xe608;</i> 修改
 						</button>
-						
 					</td>
 					
 				</tbody>

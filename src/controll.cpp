@@ -56,6 +56,18 @@ PostControll::PostControll(){
     PUSH_MOD(add_teacher);
     PUSH_MOD(update_teacher_passwd);
     PUSH_MOD(delete_teacher);
+
+    PUSH_MOD(add_student);
+    PUSH_MOD(get_student_info_by_name);
+    PUSH_MOD(get_student_info_by_number);
+    PUSH_MOD(delete_student);
+    PUSH_MOD(update_student_passwd);
+
+    PUSH_MOD(add_class_base);
+    PUSH_MOD(delete_class_base);
+    PUSH_MOD(get_class_base_by_major_class);
+    PUSH_MOD(bind_class_base_and_student);
+    PUSH_MOD(get_class_allinfo_by_class_id);
 }
 
 PutControll::PutControll(){

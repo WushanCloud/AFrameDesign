@@ -17,10 +17,10 @@
 	</head>
 
 	<body>
-	<div id="app_admin_teacher">
+	<div id="app_admin_class_base_1">
 		<div class="admin-content-body">
 			<div class="am-cf am-padding am-padding-bottom-0">
-				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">课程教师绑定</strong><small></small></div>
+				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">班级管理</strong><small></small></div>
 			</div>
 	
 			<hr>
@@ -55,11 +55,15 @@
 					</td>
 				</tbody>
 			</table>
+		</div>
+	</div>
+	<div id="app_admin_class_base_2">
+		<div class="admin-content-body">
 			<hr>
 			
 			<div class="am-g">
 				<div>
-					<h1>修改模块</h1><br />
+					<h1>删除模块</h1><br />
 				</div>
 			</div>
 			
@@ -78,14 +82,18 @@
 						<table class="am-table am-table-striped am-table-hover table-main">
 							<thead>
 								<tr>
+									<th class="table-type">班级编号</th>
 									<th class="table-title">班级专业</th>
 									<th class="table-type">班级班号</th>
+									<th class="table-type">班级人数</th>
 									<th class="table-set">操作</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
+									<td>编号	</td>
 									<td>张三	</td>
+									<td>admin</td>
 									<td>admin</td>
 									<td>
 										<div class="am-btn-toolbar">
@@ -105,5 +113,74 @@
 			
 		</div>
 	</div>
+	
+	<script>
+		var app1 = new Vue({
+			el:'#app_admin_class_base_2',
+			data:{
+				class_base_id:"",
+				class_major:"",
+				class_class:"",
+			},
+			methods:{
+				submit1:function(){
+					$.ajax({
+						url:"",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+						}
+					})
+				}
+			}
+		});
+		var app2 = new Vue({
+			el:'#app_admin_class_base_2',
+			data:{
+				teacher_name:"",
+				teacher_number:"",
+				teacher_passwd:"",
+				class_sum:""
+			},
+			methods:{
+				submit2:function(){
+					$.ajax({
+						url:"",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+							this.teacher_name = result.teacher_name;
+							this.teacher_number = result.teacher_number;
+							this.teacher_passwd = result.teacher_passwd;
+						}
+					})
+				},
+				submit3:function(){
+					$.ajax({
+						url:"get_teacher_info_by_number",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+							this.teacher_name = result.teacher_name;
+							this.teacher_number = result.teacher_number;
+							this.teacher_passwd = result.teacher_passwd;
+						}
+					})
+				}
+			}
+		});
+	</script>
 	</body>
 </html>

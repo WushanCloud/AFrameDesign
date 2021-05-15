@@ -17,10 +17,10 @@
 	</head>
 
 	<body>
-	<div id="app_admin_teacher">
+	<div id="app_admin_class_base_student_1">
 		<div class="admin-content-body">
 			<div class="am-cf am-padding am-padding-bottom-0">
-				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">学生绑定</strong><small></small></div>
+				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">班级学生绑定</strong><small></small></div>
 			</div>
 	
 			<hr>
@@ -39,13 +39,13 @@
 				  </colgroup>
 				<thead>
 					<tr>
-						<th class="table-title">课程编号</th>
+						<th class="table-title">班级编号</th>
 						<th class="table-type">学生学号</th>
 						<th class="table-set">操作</th>
 					</tr>
 				</thead>
 				<tbody>
-					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="课程编号" required></td>
+					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="班级编号" required></td>
 					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="学生学号" required></td>
 					<td>
 						<button type="button" class="layui-btn layui-btn-sm">
@@ -55,7 +55,10 @@
 				</tbody>
 			</table>
 			<hr>
-			
+		</div>
+	</div>
+	<div id="app_admin_class_base_student_2">
+		<div class="admin-content-body">
 			<div class="am-g">
 				<div>
 					<h1>修改模块</h1><br />
@@ -87,11 +90,11 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>张三	</td>
-									<td>admin</td>
-									<td>passwd</td>
-									<td>teacher</td>
-									<td>teacher</td>
+									<td>class_base_id</td>
+									<td>class_major</td>
+									<td>class_class</td>
+									<td>student_number</td>
+									<td>student_name</td>
 									<td>
 										<div class="am-btn-toolbar">
 											<div class="am-btn-group am-btn-group-xs">
@@ -110,5 +113,33 @@
 			
 		</div>
 	</div>
+	<script>
+		var app1 = new Vue({
+			el:'#app_admin_class_base_student_2',
+			data:{
+				class_base_id:"",
+				class_major:"",
+				class_class:"",
+				student_number:"",
+				student_name:"",
+			},
+			methods:{
+				submit1:function(){
+					$.ajax({
+						url:"get_class_allinfo_by_class_id",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+							alert(result);
+						}
+					})
+				}
+			}
+		});
+	</script>
 	</body>
 </html>

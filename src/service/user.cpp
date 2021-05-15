@@ -47,6 +47,7 @@ std::map<std::string, std::string> Student::get_info_by_number(const std::string
 	MYSQL_FIELD* fields;
 	unsigned int num_fields = mysql_db.MysqlNumFields(res);
 	fields = mysql_fetch_fields(res);
+    cout << num_fields << endl;
 	for (unsigned int i = 0; i < num_fields; i++) {
 		m_ss[fields[i].name] = row[i];
 	}
@@ -291,4 +292,95 @@ std::string Admin::get_name_by_number(const std::string& admin_number)
 	row = mysql.MysqlFetchRow(res);
 	mysql.MysqlFreeResult(res);
 	return row[0];
+}
+
+
+bool ClassBase::add_class_base(const std::string& class_major, const std::string& class_class) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+    std::string sql = "insert into class_base (class_major, class_class) values('" + class_major + "', '" + class_class + "')";
+	bool ret = mysql.MysqlQuery(sql);
+    return ret;
+}
+
+bool ClassBase::add_class_student_base(const std::string& class_base_id, const std::string& student_number) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+    std::string sql = "insert into class_student_base (class_base_id, student_number) values('" + class_base_id + "', '" + student_number + "')";
+	bool ret = mysql.MysqlQuery(sql);
+    return ret;
+}
+
+bool ClassBase::delete_class_base(const std::string& class_id) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+    std::string sql = "delete from class_base where class_id = '" + class_id + "'";
+	bool ret = mysql.MysqlQuery(sql);
+    return ret;
+}
+
+std::map<std::string, std::string> ClassBase::get_info_by_major_class(const std::string& class_major, const std::string& class_class) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::map<std::string, std::string> m_ss;
+	std::string sql = "select * from class_base where class_major= '" + class_major + "' and class_class = '" + class_class + "'";
+	mysql.MysqlQuery(sql);
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return m_ss;
+	}
+	MYSQL_ROW row;
+	row = mysql.MysqlFetchRow(res);
+	mysql.MysqlFreeResult(res);
+
+	MYSQL_FIELD* fields;
+	unsigned int num_fields = mysql.MysqlNumFields(res);
+	fields = mysql_fetch_fields(res);
+	for (unsigned int i = 0; i < num_fields; i++) {
+		m_ss[fields[i].name] = row[i];
+	}
+	return m_ss;
+}
+
+std::map<std::string, std::string> ClassBase::get_info_by_id(const std::string& class_base_id) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::map<std::string, std::string> m_ss;
+	std::string sql = "select * from class_base where class_base_id = " + class_base_id;
+	mysql.MysqlQuery(sql);
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return m_ss;
+	}
+	MYSQL_ROW row;
+	row = mysql.MysqlFetchRow(res);
+	mysql.MysqlFreeResult(res);
+
+	MYSQL_FIELD* fields;
+	unsigned int num_fields = mysql.MysqlNumFields(res);
+	fields = mysql_fetch_fields(res);
+	for (unsigned int i = 0; i < num_fields; i++) {
+		m_ss[fields[i].name] = row[i];
+	}
+	return m_ss;
+
+}
+
+std::vector<std::string> ClassBase::get_all_student_number_by_id(const std::string& class_base_id) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::vector<std::string> v_s;
+	std::string sql = "SELECT student_number FROM class_student_base where class_base_id = " + class_base_id;
+	mysql.MysqlQuery(sql);
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return v_s;
+	}
+	MYSQL_ROW row;
+	for (int i = 0; i < len; i++) {
+		row = mysql.MysqlFetchRow(res);
+		v_s.push_back(row[0]);
+	}
+	mysql.MysqlFreeResult(res);
+	return v_s;
 }

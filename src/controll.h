@@ -9,6 +9,7 @@
 #include "./controller/student.h"
 #include "./controller/admin.h"
 #include "./controller/teacher.h"
+#include "./controller/class.h"
 #include "./controller/other.h"
 using namespace std;
 
