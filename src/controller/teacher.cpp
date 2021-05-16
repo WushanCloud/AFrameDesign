@@ -75,6 +75,9 @@ void get_teacher_info_by_name(const httplib::Request& req, httplib::Response& re
     // 数据库介入
     Teacher teacher;
     map<string, string> info = teacher.get_info_by_name(value_r["teacher_name"].asString());
+    if (info.empty()) {
+        value_w["error"] = "用户不存在";
+    }
     value_w["teacher_name"] = info["teacher_name"];
     value_w["teacher_number"] = info["teacher_number"];
     value_w["teacher_passwd"] = info["teacher_passwd"];
@@ -99,6 +102,9 @@ void get_teacher_info_by_number(const httplib::Request& req, httplib::Response& 
     // 数据库介入
     Teacher teacher;
     map<string, string> info = teacher.get_info_by_number(value_r["teacher_number"].asString());
+    if (info.empty()) {
+        value_w["error"] = "用户不存在";
+    }
     value_w["teacher_name"] = info["teacher_name"];
     value_w["teacher_number"] = info["teacher_number"];
     value_w["teacher_passwd"] = info["teacher_passwd"];

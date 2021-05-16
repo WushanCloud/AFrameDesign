@@ -51,6 +51,8 @@ GetControll::GetControll(){
 }
 
 PostControll::PostControll(){
+    PUSH_MOD(update_admin_passwd);
+
     PUSH_MOD(get_teacher_info_by_name);
     PUSH_MOD(get_teacher_info_by_number);
     PUSH_MOD(add_teacher);
@@ -66,8 +68,17 @@ PostControll::PostControll(){
     PUSH_MOD(add_class_base);
     PUSH_MOD(delete_class_base);
     PUSH_MOD(get_class_base_by_major_class);
+    PUSH_MOD(get_class_base_by_id);
     PUSH_MOD(bind_class_base_and_student);
     PUSH_MOD(get_class_allinfo_by_class_id);
+
+    PUSH_MOD(add_class);
+    PUSH_MOD(get_class_by_name_and_major);
+    PUSH_MOD(get_class_by_class_id);
+    PUSH_MOD(delete_class_by_id);
+    PUSH_MOD(update_class_by_id);
+    PUSH_MOD(bind_class_and_student);
+    PUSH_MOD(delete_class_and_student);
 }
 
 PutControll::PutControll(){

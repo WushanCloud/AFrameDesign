@@ -45,10 +45,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="班级编号" required></td>
-					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="学生学号" required></td>
+					<td><input class="am-form-field" type="text" v-model="class_base_id" value="" placeholder="班级编号" required></td>
+					<td><input class="am-form-field" type="text" v-model="student_number" value="" placeholder="学生学号" required></td>
 					<td>
-						<button type="button" class="layui-btn layui-btn-sm">
+						<button type="button" v-on:click="submit1" class="layui-btn layui-btn-sm">
 						  <i class="layui-icon">&#xe608;</i> 添加
 						</button>
 					</td>
@@ -67,9 +67,9 @@
 			
 			<div class="am-u-sm-12 am-u-md-3">
 				<div class="am-input-group am-input-group-sm">
-					<input type="text" class="am-form-field" placeholder="请输入班级编号">
+					<input type="text" class="am-form-field" v-model="class_base_id" placeholder="请输入班级编号">
 					<span class="am-input-group-btn">
-						<button class="am-btn am-btn-default" type="button">搜索</button>
+						<button class="am-btn am-btn-default" v-on:click="submit2" type="button">搜索</button>
 					</span>
 				</div>
 			</div>
@@ -89,12 +89,13 @@
 								</tr>
 							</thead>
 							<tbody>
+								<template v-for="item in items">
 								<tr>
-									<td>class_base_id</td>
-									<td>class_major</td>
-									<td>class_class</td>
-									<td>student_number</td>
-									<td>student_name</td>
+									<td>{{item.class_base_id}}</td>
+									<td>{{item.class_major}}</td>
+									<td>{{item.class_class}}</td>
+									<td>{{item.student_number}}</td>
+									<td>{{item.student_name}}</td>
 									<td>
 										<div class="am-btn-toolbar">
 											<div class="am-btn-group am-btn-group-xs">
@@ -103,6 +104,7 @@
 										</div>
 									</td>
 								</tr>
+								</template>
 							</tbody>
 						</table>
 						
@@ -115,6 +117,28 @@
 	</div>
 	<script>
 		var app1 = new Vue({
+			el:'#app_admin_class_base_student_1',
+			data:{
+				class_base_id:"",
+				student_number:"",
+			},
+			methods:{
+				submit1:function(){
+					$.ajax({
+						url:"bind_class_base_and_student",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+						}
+					})
+				}
+			}
+		});
+		var app2 = new Vue({
 			el:'#app_admin_class_base_student_2',
 			data:{
 				class_base_id:"",
@@ -122,9 +146,10 @@
 				class_class:"",
 				student_number:"",
 				student_name:"",
+				items:"",
 			},
 			methods:{
-				submit1:function(){
+				submit2:function(){
 					$.ajax({
 						url:"get_class_allinfo_by_class_id",
 						type:"post",
@@ -133,8 +158,20 @@
 						context:this,
 						data:JSON.stringify(this.$data),
 						success:function(result) {
-							alert(result.result);
-							alert(result);
+							this.items = result;
+						}
+					})
+				},
+				submit3:function(){
+					$.ajax({
+						url:"get_class_allinfo_by_class_id",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							this.items = result;
 						}
 					})
 				}

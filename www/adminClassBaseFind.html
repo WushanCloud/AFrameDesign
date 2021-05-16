@@ -17,7 +17,7 @@
 	</head>
 
 	<body>
-	<div id="app_admin_teacher">
+	<div id="app_admin_class_base_find_1">
 		<div class="admin-content-body">
 			<div class="am-cf am-padding am-padding-bottom-0">
 				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">班级查询</strong><small></small></div>
@@ -44,10 +44,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="班级专业" required></td>
-					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="班级班号" required></td>
+					<td><input class="am-form-field" type="text" v-model="class_major" value="" placeholder="班级专业" required></td>
+					<td><input class="am-form-field" type="text" v-model="class_class" value="" placeholder="班级班号" required></td>
 					<td>
-						<button type="button" class="layui-btn layui-btn-sm">
+						<button type="button" v-on:click="submit1" class="layui-btn layui-btn-sm">
 						  <i class="layui-icon">&#xe608;</i> 搜索
 						</button>
 					</td>
@@ -69,10 +69,10 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>number</td>
-									<td>张三	</td>
-									<td>balabala</td>
-									<td>balabala</td>
+									<td>{{class_base_id}}</td>
+									<td>{{class_major}}</td>
+									<td>{{class_class}}</td>
+									<td>{{class_sum}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -104,5 +104,36 @@
 			
 		</div>
 	</div>
+	
+	<script>
+		var app1 = new Vue({
+			el:'#app_admin_class_base_find_1',
+			data:{
+				class_base_id:"",
+				class_major:"",
+				class_class:"",
+				class_sum:""
+			},
+			methods:{
+				submit1:function(){
+					$.ajax({
+						url:"get_class_base_by_major_class",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+							this.class_base_id = result.class_base_id;
+							this.class_major = result.class_major;
+							this.class_class = result.class_class;
+							this.class_sum = result.class_sum;
+						}
+					})
+				}
+			}
+		});
+	</script>
 	</body>
 </html>

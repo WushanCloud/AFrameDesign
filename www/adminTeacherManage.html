@@ -105,8 +105,8 @@
 									<td>
 										<div class="am-btn-toolbar">
 											<div class="am-btn-group am-btn-group-xs">
-												<button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 初始化密码</button>
-												<button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
+												<button class="am-btn am-btn-default am-btn-xs am-text-secondary" v-on:click="submit4()"><span class="am-icon-pencil-square-o"></span> 初始化密码</button>
+												<button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" v-on:click="submit5()"><span class="am-icon-trash-o"></span> 删除</button>
 											</div>
 										</div>
 									</td>
@@ -183,7 +183,33 @@
 							this.teacher_passwd = result.teacher_passwd;
 						}
 					})
-				}
+				},
+				submit4:function(){
+					$.ajax({
+						url:"update_teacher_passwd",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+						}
+					})
+				},
+				submit5:function(){
+					$.ajax({
+						url:"delete_teacher",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+						}
+					})
+				},
 			}
 		});
 	</script>

@@ -134,7 +134,7 @@ bool LoginToken(const httplib::Request& req, httplib::Response& res) {
             return false;
         }
         redis.Command("hset " + token.GetToken() + " user_number " + user_number);
-        redis.Command("expire " + token.GetToken() + " 3600");
+        redis.Command("expire " + token.GetToken() + " 13600");
         return true;
     } else {
         value2["result"] = "1";

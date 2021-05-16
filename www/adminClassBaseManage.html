@@ -46,10 +46,10 @@
 				</thead>
 				<tbody>
 					
-					<td><input class="am-form-field" type="text" v-model="teacher_name" value="" placeholder="班级专业" required></td>
-					<td><input class="am-form-field" type="text" v-model="teacher_passwd" value="" placeholder="班级班号" required></td>
+					<td><input class="am-form-field" type="text" v-model="class_major" value="" placeholder="班级专业" required></td>
+					<td><input class="am-form-field" type="text" v-model="class_class" value="" placeholder="班级班号" required></td>
 					<td>
-						<button type="button" class="layui-btn layui-btn-sm">
+						<button type="button" v-on:click="submit1" class="layui-btn layui-btn-sm">
 						  <i class="layui-icon">&#xe608;</i> 添加
 						</button>
 					</td>
@@ -69,9 +69,9 @@
 			
 			<div class="am-u-sm-12 am-u-md-3">
 				<div class="am-input-group am-input-group-sm">
-					<input type="text" class="am-form-field" placeholder="请输入班级编号">
+					<input type="text" class="am-form-field" v-model="class_base_id" placeholder="请输入班级编号">
 					<span class="am-input-group-btn">
-						<button class="am-btn am-btn-default" type="button">搜索</button>
+						<button class="am-btn am-btn-default" v-on:click="button1" type="button">搜索</button>
 					</span>
 				</div>
 			</div>
@@ -91,14 +91,14 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>编号	</td>
-									<td>张三	</td>
-									<td>admin</td>
-									<td>admin</td>
+									<td>{{class_base_id}}</td>
+									<td>{{class_major}}</td>
+									<td>{{class_class}}</td>
+									<td>{{class_sum}}</td>
 									<td>
 										<div class="am-btn-toolbar">
 											<div class="am-btn-group am-btn-group-xs">
-												<button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
+												<button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" v-on:click="button2()"><span class="am-icon-trash-o"></span> 删除</button>
 											</div>
 										</div>
 									</td>
@@ -116,7 +116,7 @@
 	
 	<script>
 		var app1 = new Vue({
-			el:'#app_admin_class_base_2',
+			el:'#app_admin_class_base_1',
 			data:{
 				class_base_id:"",
 				class_major:"",
@@ -125,7 +125,7 @@
 			methods:{
 				submit1:function(){
 					$.ajax({
-						url:"",
+						url:"add_class_base",
 						type:"post",
 						contentType: "application/json", //必须这样写
 						dataType:"json",
@@ -141,15 +141,15 @@
 		var app2 = new Vue({
 			el:'#app_admin_class_base_2',
 			data:{
-				teacher_name:"",
-				teacher_number:"",
-				teacher_passwd:"",
+				class_base_id:"",
+				class_major:"",
+				class_class:"",
 				class_sum:""
 			},
 			methods:{
-				submit2:function(){
+				button1:function(){
 					$.ajax({
-						url:"",
+						url:"get_class_base_by_id",
 						type:"post",
 						contentType: "application/json", //必须这样写
 						dataType:"json",
@@ -157,15 +157,16 @@
 						data:JSON.stringify(this.$data),
 						success:function(result) {
 							alert(result.result);
-							this.teacher_name = result.teacher_name;
-							this.teacher_number = result.teacher_number;
-							this.teacher_passwd = result.teacher_passwd;
+							this.class_base_id = result.class_base_id;
+							this.class_major = result.class_major;
+							this.class_class = result.class_class;
+							this.class_sum = result.class_sum;
 						}
 					})
 				},
-				submit3:function(){
+				button2:function(){
 					$.ajax({
-						url:"get_teacher_info_by_number",
+						url:"delete_class_base",
 						type:"post",
 						contentType: "application/json", //必须这样写
 						dataType:"json",
@@ -173,9 +174,6 @@
 						data:JSON.stringify(this.$data),
 						success:function(result) {
 							alert(result.result);
-							this.teacher_name = result.teacher_name;
-							this.teacher_number = result.teacher_number;
-							this.teacher_passwd = result.teacher_passwd;
 						}
 					})
 				}

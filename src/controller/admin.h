@@ -11,5 +11,6 @@
 
 void get_admin_name(const httplib::Request& req, httplib::Response& res); 
 
+void update_admin_passwd(const httplib::Request& req, httplib::Response& res);
 
 #endif // _ADMIN_H

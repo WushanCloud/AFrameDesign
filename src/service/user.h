@@ -26,7 +26,7 @@ public:
 	std::vector<std::string> get_class_by_id(const std::string& student_id);
 
 	// 添加学生信息
-	bool add_student(const std::string& student_number, const std::string& student_name, const std::string& student_passwd, const std::string& student_major = "", int student_class = 1703);
+	bool add_student(const std::string& student_number, const std::string& student_name, const std::string& student_passwd, const std::string& student_major = "", const std::string& student_class = "0");
 
 	// 删除一位学生
 	bool delete_student(const std::string& student_number, const std::string& student_name = "");
@@ -64,10 +64,13 @@ class Admin {
 	DBconnect mysql;
 public:
 	// 根据账号获取管理员的密码;
-	std::string get_passwd_by_number(const std::string& student_number);
+	std::string get_passwd_by_number(const std::string& admin_number);
 
     // 根据账号获取管理员名字
     std::string get_name_by_number(const std::string& admin_number);
+
+    // 更新管理员密码
+    bool update_passwd(const std::string& admin_number, const std::string& admin_passwd = "123456");
 };
 
 class ClassBase {
@@ -91,5 +94,33 @@ public:
 	// 根据班级编号查询班级的学生
 	std::vector<std::string> get_all_student_number_by_id(const std::string& class_base_id);
 
+};
+
+/**
+ * 课程类
+ */
+class Class {
+    DBconnect mysql;
+public:
+    // 添加一个课程
+    bool add_class(const std::string& class_name, const std::string& class_base_id, const std::string& class_major, const std::string& class_class, const std::string& class_info);
+
+    // 通过课程名和课程专业查询课程
+    std::vector<std::map<std::string, std::string>> get_class_by_name_major(const std::string& class_name, const std::string& class_major);
+
+    // 通过课程编号查询课程
+    std::map<std::string, std::string> get_info_by_id(const std::string& class_id);
+
+    // 通过课程编号删除课程
+    bool delete_class(const std::string& class_id);
+
+    // 通过课程编号修改课程
+    bool update_class(const std::string& class_id, const std::string& class_name, const std::string& class_base_id, const std::string& class_major, const std::string& class_class, const std::string& class_info);
+
+    // 给课程添加学生
+    bool add_student_class(const std::string& class_id, const std::string& student_number);
+
+    // 给课程删除学生
+    bool delete_student_class(const std::string& class_id, const std::string& student_number);
 };
 
