@@ -8,7 +8,7 @@
 #include "../../struct/myredis.h"
 #include "../service/user.h"
 
-#define TEACHER_LOG "../../../log/err_controller.log"
+#define TEACHER_LOG "../log/err_controller.log"
 
 // 添加一个教师
 void add_teacher(const httplib::Request& req, httplib::Response& res);
@@ -28,4 +28,23 @@ void delete_teacher(const httplib::Request& req, httplib::Response& res);
 // 初始化一位教师的密码
 void update_teacher_passwd(const httplib::Request& req, httplib::Response& res);
 
+
+/**
+ * 教师系统
+ */
+
+// 获取教师的所有授课
+void get_teacher_class(const httplib::Request& req, httplib::Response& res);
+
+// 创建作业
+void add_class_work(const httplib::Request& req, httplib::Response& res);
+
+// 创建实验
+void add_class_test(const httplib::Request& req, httplib::Response& res);
+
+// 通过课程编号查询作业
+void get_class_work_by_class_id(const httplib::Request& req, httplib::Response& res);
+
+// 通过课程编号查询作业
+void get_class_test_by_class_id(const httplib::Request& req, httplib::Response& res);
 #endif // _TEACHER_H

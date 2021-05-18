@@ -3,6 +3,10 @@
 #include <string>
 #include <map>
 #include "../../struct/db_connection.h"
+#include "../../struct/log.h"
+
+#define ERRDIR "../log/function.log"
+
 
 void trim(std::string& s);
 
@@ -117,10 +121,42 @@ public:
     // 通过课程编号修改课程
     bool update_class(const std::string& class_id, const std::string& class_name, const std::string& class_base_id, const std::string& class_major, const std::string& class_class, const std::string& class_info);
 
+    // 给课程添加教师
+    bool add_teacher_class(const std::string& class_id, const std::string& teacher_number);
+
+    // 给课程删除教师
+    bool delete_teacher_class(const std::string& class_id, const std::string& teacher_number);
+
+    // 通过课程id查询授课老师
+    std::vector<std::map<std::string, std::string>> get_teacher_by_id(const std::string& class_id);
+
+    // 通过课程id查询听课学生
+    std::vector<std::map<std::string, std::string>> get_student_by_id(const std::string& class_id);
+
     // 给课程添加学生
     bool add_student_class(const std::string& class_id, const std::string& student_number);
 
     // 给课程删除学生
     bool delete_student_class(const std::string& class_id, const std::string& student_number);
+};
+
+/***
+ * 作业类
+ */
+
+class Work {
+    DBconnect mysql;
+public:
+    // 添加一次作业
+    bool add_work(const std::string& class_id, const std::string& work_name, const std::string& work_sorce);
+
+    // 添加一次实验
+    bool add_test(const std::string& class_id, const std::string& work_name, const std::string& work_sorce);
+
+    // 通过课程编号查询作业
+    std::vector<std::map<std::string, std::string>> get_work_by_id(const std::string& class_id);
+
+    // 通过课程编号查询实验
+    std::vector<std::map<std::string, std::string>> get_test_by_id(const std::string& class_id);
 };
 

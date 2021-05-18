@@ -10,6 +10,9 @@
 
 #include "../service/user.h"
 
+// 测试链接接口
+void test(const httplib::Request& req, httplib::Response& res);
+
 // 处理其他未知请求
 void other(const httplib::Request& req, httplib::Response& res);
 
@@ -19,5 +22,7 @@ int check_user(const std::string& user_type, const std::string& user_number, con
 
 // 判断登录页面
 void get_pages(const httplib::Request& req, httplib::Response& res);
+
+
 
 #endif // !_OTHER_H

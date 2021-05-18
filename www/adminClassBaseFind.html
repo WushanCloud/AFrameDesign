@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="css/amazeui.min.css" />
 		<link rel="stylesheet" href="css/admin.css" />
 		<!-- 引入 layui.css -->
-		<link rel="stylesheet" href="css/layui.css">
+		<link rel="stylesheet" href="//unpkg.com/layui@2.6.6/dist/css/layui.css">
 		 
 		<!-- 引入 layui.js -->
 		<script src="//unpkg.com/layui@2.6.4/dist/layui.js"></script>
@@ -80,6 +80,10 @@
 					</form>
 				</div>
 				
+				<div>
+					<button class="am-btn am-btn-default" v-on:click="submit2" type="button">显示班级学生</button><br />
+				</div>
+				
 				<form class="am-form">
 					<table class="am-table am-table-striped am-table-hover table-main">
 						<thead>
@@ -90,11 +94,13 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>number</td>
-								<td>张三	</td>
-								<td>balabala</td>
-							</tr>
+							<template v-for="it in items_s">
+								<tr>
+									<td>{{class_base_id}}</td>
+									<td>{{it.student_number}}</td>
+									<td>{{it.student_name}}</td>
+								</tr>
+							</template>
 						</tbody>
 					</table>
 					
@@ -112,7 +118,8 @@
 				class_base_id:"",
 				class_major:"",
 				class_class:"",
-				class_sum:""
+				class_sum:"",
+				items_s:"",
 			},
 			methods:{
 				submit1:function(){
@@ -129,6 +136,19 @@
 							this.class_major = result.class_major;
 							this.class_class = result.class_class;
 							this.class_sum = result.class_sum;
+						}
+					})
+				},
+				submit2:function(){
+					$.ajax({
+						url:"get_class_allinfo_by_class_id",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
 						}
 					})
 				}

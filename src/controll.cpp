@@ -44,13 +44,18 @@ DeleteControll* DeleteControll::getInstance() {
 }
 
 GetControll::GetControll(){
+    PUSH_MOD(test);
     PUSH_MOD(get_student_name);
     PUSH_MOD(get_admin_name);
     PUSH_MOD(get_teacher_name);
     PUSH_MOD(other);              
+
+    // 教师
+    PUSH_MOD(get_teacher_class);
 }
 
 PostControll::PostControll(){
+    PUSH_MOD(test);
     PUSH_MOD(update_admin_passwd);
 
     PUSH_MOD(get_teacher_info_by_name);
@@ -79,11 +84,23 @@ PostControll::PostControll(){
     PUSH_MOD(update_class_by_id);
     PUSH_MOD(bind_class_and_student);
     PUSH_MOD(delete_class_and_student);
+    PUSH_MOD(bind_class_and_teacher);
+    PUSH_MOD(delete_class_and_teacher);
+    PUSH_MOD(get_teacher_by_class_id);
+    PUSH_MOD(get_all_student_by_class_id);
+
+    // 教师
+    PUSH_MOD(add_class_work);
+    PUSH_MOD(add_class_test);
+    PUSH_MOD(get_class_work_by_class_id);
+    PUSH_MOD(get_class_test_by_class_id);
 }
 
 PutControll::PutControll(){
+    PUSH_MOD(test);
 }
 
 DeleteControll::DeleteControll(){
+    PUSH_MOD(test);
 }
 #endif // !_CONTROLL_CPP

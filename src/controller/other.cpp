@@ -3,6 +3,29 @@
 
 #include "other.h"
 
+
+
+void test(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::FastWriter writer;
+    Json::Reader reader;
+    
+    cout << "Cookie" << endl;
+    cout << req.get_param_value("Cookie") << endl;
+
+    cout << "param" << endl;
+    for (auto it = req.params.begin(); it != req.params.end(); it++) {
+        cout << it->first << "=" << it->second << endl; 
+    }
+
+    cout << "req.body :" << endl;
+    cout << req.body << endl;
+
+    value_w["result"] = "true";
+    res.body = writer.write(value_w);
+}
+
 void other(const httplib::Request& req, httplib::Response& res) {
     if (req.path.substr(1) == "favicon.ico") {
         res.set_content("1", "text/plain");

@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="css/amazeui.min.css" />
 		<link rel="stylesheet" href="css/admin.css" />
 		<!-- 引入 layui.css -->
-		<link rel="stylesheet" href="css/layui.css">
+		<link rel="stylesheet" href="//unpkg.com/layui@2.6.6/dist/css/layui.css">
 		 
 		<!-- 引入 layui.js -->
 		<script src="//unpkg.com/layui@2.6.4/dist/layui.js"></script>
@@ -17,7 +17,7 @@
 	</head>
 
 	<body>
-	<div id="app_admin_teacher">
+	<div id="app_admin_class_find_all">
 		<div class="admin-content-body">
 			<div class="am-cf am-padding am-padding-bottom-0">
 				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">课程详情查询</strong><small></small></div>
@@ -32,9 +32,9 @@
 			</div>
 			<div class="am-u-sm-12 am-u-md-3">
 				<div class="am-input-group am-input-group-sm">
-					<input type="text" class="am-form-field" placeholder="请输入课程编号">
+					<input type="text" class="am-form-field" v-model="class_id" placeholder="请输入课程编号">
 					<span class="am-input-group-btn">
-						<button class="am-btn am-btn-default" type="button">搜索</button>
+						<button class="am-btn am-btn-default" v-on:click="submit1" type="button">搜索</button>
 					</span>
 				</div>
 			</div>
@@ -45,6 +45,7 @@
 						<table class="am-table am-table-striped am-table-hover table-main">
 							<thead>
 								<tr>
+									<th class="table-title">课程编号</th>
 									<th class="table-title">课程名</th>
 									<th class="table-type">课程专业</th>
 									<th class="table-type">课程班级</th>
@@ -53,20 +54,56 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>张三	</td>
-									<td>admin</td>
-									<td>passwd</td>
-									<td>balabala</td>
+									<td>{{class_id}}</td>
+									<td>{{class_name}}</td>
+									<td>{{class_major}}</td>
+									<td>{{class_class}}</td>
+									<td>{{class_info}}</td>
 								</tr>
 							</tbody>
 						</table>
 						
 						<hr>
 					</form>
-					<div>课程人数 </div> {{number}}
 				</div>
 			</div>
 			<hr />
+			<div class="am-g">
+				<div>
+					<button class="am-btn am-btn-default" v-on:click="submit2" type="button">显示授课教师</button><br />
+				</div>
+			</div>
+			<div class="am-g">
+				<div class="am-u-sm-12">
+					<form class="am-form">
+						<table class="am-table am-table-striped am-table-hover table-main">
+							<thead>
+								<tr>
+									<th class="table-title">教师编号</th>
+									<th class="table-type">教师姓名</th>
+								</tr>
+							</thead>
+							<tbody>
+								<template v-for="it in items_t">
+									<tr>
+										<td>{{it.teacher_number}}</td>
+										<td>{{it.teacher_name}}</td>
+									</tr>
+								</template>
+								
+							</tbody>
+						</table>
+						
+						<hr>
+					</form>
+				</div>
+			</div>
+			<hr />
+			<div class="am-g">
+				<div>
+					<button class="am-btn am-btn-default" v-on:click="submit3" type="button">显示课程学生</button><br /><br />
+				</div>
+			</div>
 			<div class="am-g">
 				<div class="am-u-sm-12">
 					<form class="am-form">
@@ -78,13 +115,14 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>admin</td>
-									<td>张三</td>
-								</tr>
+								<template v-for="it in items_s">
+									<tr>
+										<td>{{it.student_number}}</td>
+										<td>{{it.student_name}}</td>
+									</tr>
+								</template>
 							</tbody>
 						</table>
-						
 						<hr>
 					</form>
 				</div>
@@ -92,5 +130,77 @@
 			
 		</div>
 	</div>
+	
+	<script>
+		var app1 = new Vue({
+			el:'#app_admin_class_find_all',
+			data:{
+				class_id:"0",
+				class_name:"",
+				class_major:"",
+				class_class:"",
+				class_info:"",
+				items_t:"",
+				items_s:"",
+			},
+			methods:{
+				submit1:function(){
+					$.ajax({
+						url:"get_class_by_class_id",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							if (result.result == "false") {
+								alert(result.error);
+							} else {
+								this.class_id = result.class_id;
+								this.class_name = result.class_name;
+								this.class_major = result.class_major;
+								this.class_class = result.class_class;
+								this.class_info = result.class_info;
+							}
+						}
+					})
+				},
+				submit2:function(){
+					$.ajax({
+						url:"get_teacher_by_class_id",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							if (result.result == "false") {
+								alert(result.error);
+							} else {
+								this.items_t = result;
+							}
+						}
+					})
+				},
+				submit3:function(){
+					$.ajax({
+						url:"get_all_student_by_class_id",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							if (result.result == "false") {
+								alert(result.error);
+							} else {
+								this.items_s = result;
+							}
+						}
+					})
+				}
+			}
+		});
+	</script>
 	</body>
 </html>

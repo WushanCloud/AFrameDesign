@@ -17,7 +17,7 @@
 	</head>
 
 	<body>
-	<div id="app_admin_class_find_1">
+	<div id="app_teacher_class_find_1">
 		<div class="admin-content-body">
 			<div class="am-cf am-padding am-padding-bottom-0">
 				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">课程查询</strong><small></small></div>
@@ -27,34 +27,9 @@
 			
 			<div class="am-g">
 				<div>
-					<h1>搜索课程</h1><br />
+					<button class="layui-btn layui-btn-radius layui-btn-normal" v-on:click="get_teacher_class()" >显示所有课程</button>
 				</div>
 			</div>
-			<div class="am-table">通过课程名和课程专业查询</div>
-			<table class="layui-table am-table am-table-striped am-table-hover" lay-skin="nob">
-				<colgroup>
-				    <col width="250">
-				    <col width="300">
-				    <col width="300">
-				</colgroup>
-				<thead>
-					<tr>
-						<th class="table-title">课程名</th>
-						<th class="table-type">课程专业</th>
-						<th class="table-set">操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<td><input class="am-form-field" type="text" v-model="class_name" value="" placeholder="课程名" required></td>
-					<td><input class="am-form-field" type="text" v-model="class_major" value="" placeholder="课程专业" required></td>
-					<td>
-						<button type="button" v-on:click="submit1()" class="layui-btn layui-btn-sm">
-						  <i class="layui-icon">&#xe608;</i> 搜索
-						</button>
-					</td>
-				</tbody>
-			</table>
-			
 			
 			<div class="am-g">
 				<div class="am-u-sm-12">
@@ -90,28 +65,22 @@
 	</div>
 	
 	<script>
-		var app1 = new Vue({
-			el:'#app_admin_class_find_1',
+		var app = new Vue({
+			el:'#app_teacher_class_find_1',
 			data:{
-				class_name:"",
-				class_major:"",
-				items:""
+				items:"",
 			},
 			methods:{
-				submit1:function(){
+				get_teacher_class:function() {
 					$.ajax({
-						url:"get_class_by_name_and_major",
-						type:"post",
+						url:"/get_teacher_class",
+						type:"get",
 						contentType: "application/json", //必须这样写
 						dataType:"json",
 						context:this,
 						data:JSON.stringify(this.$data),
 						success:function(result) {
-							if (result.result == "false") {
-								alert(result.error);
-							} else {
-								this.items = result;
-							}
+							this.items = result;
 						}
 					})
 				}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/admin.css" />
+		<!-- 引入 layui.css -->
+		<link rel="stylesheet" href="//unpkg.com/layui@2.6.6/dist/css/layui.css">
+		 
+		<!-- 引入 layui.js -->
+		<script src="//unpkg.com/layui@2.6.4/dist/layui.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<title>Layui</title>
+		
+	</head>
+
+	<body>
+	<div id="app_teacher_class_homework">
+		<div class="admin-content-body">
+			<div class="am-cf am-padding am-padding-bottom-0">
+				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">课堂作业管理</strong><small></small></div>
+			</div>
+
+			<hr>
+			<div class="am-g">
+				<div>
+					<h2>创建作业</h2><br />
+				</div>
+			</div>
+			<div class="am-u-sm-12 am-u-md-3">
+				<div class="am-input-group am-input-group-sm">
+					<input type="text" v-model="class_id" required  lay-verify="required" placeholder="请输入课程作业编号" autocomplete="off" class="layui-input">
+					<span class="am-input-group-btn">
+						<button class="layui-btn layui-btn-normal" v-on:click="find_class" type="button">搜索</button>
+					</span>
+				</div>
+			</div>
+			
+			<div class="am-g">
+				<div class="am-u-sm-12">
+					<form class="am-form">
+						<table class="am-table am-table-striped am-table-hover table-main">
+							<thead>
+								<tr>
+									<th class="table-title">课程编号</th>
+									<th class="table-title">作业编号</th>
+									<th class="table-title">作业名</th>
+									<th class="table-type">作业总分</th>
+									<th class="table-type">创建时间</th>
+								</tr>
+							</thead>
+							<tbody>
+								<template v-for="item in items">
+								<tr>
+									<td>{{item.class_id}}</td>
+									<td>{{item.class_work_id}}</td>
+									<td>{{item.work_name}}</td>
+									<td>{{item.work_sorce}}</td>
+									<td>{{item.work_createtime}}</td>
+								</tr>
+								</template>
+							</tbody>
+						</table>
+						
+						<hr>
+					</form>
+				</div>
+			</div>
+			<hr />
+			<div class="am-g">
+				<div>
+					<h2>添加题目</h2><br />
+				</div>
+			</div>
+			
+			<form class="layui-form">
+				<div class="layui-form-item">
+				  <label class="layui-form-label">类型</label>
+				  <div class="layui-input-block">
+				    <input type="radio" name="sex" value="" title="单选" checked>
+				    <input type="radio" name="sex" value="" title="多选" >
+				    <input type="radio" name="sex" value="" title="填空" >
+				  </div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">分值</label>
+					<div class="layui-input-block">
+						<input type="text" name="title" required  lay-verify="required" placeholder="请输入题目分值" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+				  <label class="layui-form-label">题目</label>
+				  <div class="layui-input-block">
+				    <textarea name="desc" placeholder="请输入题目内容" required  lay-verify="required" class="layui-textarea"></textarea>
+				  </div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">选项A</label>
+					<div class="layui-input-block">
+						<input type="text" name="title"  placeholder="请输入选项A" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">选项B</label>
+					<div class="layui-input-block">
+						<input type="text" name="title"  placeholder="请输入选项B" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">选项C</label>
+					<div class="layui-input-block">
+						<input type="text" name="title"  placeholder="请输入选项C" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">选项D</label>
+					<div class="layui-input-block">
+						<input type="text" name="title"  placeholder="请输入选项D" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+			  
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit >立即提交</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<script>
+		var app = new Vue({
+			el:'#app_teacher_class_homework',
+			data:{
+				class_id:"",
+				items:"",
+			},
+			methods:{
+				find_class:function() {
+					$.ajax({
+						url:"/",
+						type:"get",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							this.items = result;
+						}
+					})
+				}
+			}
+		});
+	</script>
+	</body>
+</html>

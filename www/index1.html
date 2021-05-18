@@ -5,12 +5,13 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<title>课后教学管理系统</title>
-		<link rel="stylesheet" href="css/layui.css">
+		<link rel="stylesheet" href="//unpkg.com/layui@2.6.6/dist/css/layui.css">
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	</head>
 
 	<body class="layui-layout-body">
+	<div id="app_teacher_index0">
 		<div class="layui-layout layui-layout-admin">
 			<div class="layui-header">
 				<div class="layui-logo">课后教学管理系统 - 教师版</div>
@@ -19,7 +20,7 @@
 				<ul class="layui-nav layui-layout-right">
 					<li class="layui-nav-item">
 						<a href="javascript:;">
-							<img src="images/1.gif" class="layui-nav-img"> 管理员
+							<img src="images/1.gif" class="layui-nav-img"> {{teacher_name}}
 						</a>
 						<dl class="layui-nav-child">
 							<dd>
@@ -44,10 +45,10 @@
 							<a class="" href="javascript:;">课程管理</a>
 							<dl class="layui-nav-child">
 								<dd>
-									<a href="adminTeacherManage.html" target="right">我教学的课程</a>
+									<a href="teacherClassFind.html" target="right">我教学的课程</a>
 								</dd>
 								<dd>
-									<a href="adminStudentManage.html" target="right">我的课程学生</a>
+									<a href="teacherClassStudentFind.html" target="right">我的课程学生</a>
 								</dd>
 							</dl>
 						</li>
@@ -56,13 +57,19 @@
 							<a href="javascript:;">作业管理</a>
 							<dl class="layui-nav-child">
 								<dd>
-									<a href="adminClassFind.html" target="right">布置课堂作业</a>
+									<a href="teacherCLassCreateHomeworkOrTest.html" target="right">创建作业或试验</a>
+								</dd>
+								<dd>
+									<a href="teacherCLassHomeworkManage.html" target="right">布置课堂作业</a>
 								</dd>
 								<dd>
 									<a href="adminClassFind.html" target="right">布置课堂试验</a>
 								</dd>
 								<dd>
-									<a href="adminClassManage.html" target="right">查看课程作业</a>
+									<a href="teacherCLassHomeworkFind.html" target="right">查看课程作业</a>
+								</dd>
+								<dd>
+									<a href="teacherCLassHometestFind.html" target="right">查看课程试验</a>
 								</dd>
 								<dd>
 									<a href="adminClassTeacherManage.html" target="right">查看学生作业</a>
@@ -117,10 +124,9 @@
 				底部固定区域
 			</div>
 		</div>
-		
+	</div>
 		<!-- <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-		<script type="text/javascript" src="myplugs/js/plugs.js"> -->
-		</script>
+		<script type="text/javascript" src="myplugs/js/plugs.js"> </script>-->
 		<script type="text/javascript">
 			//添加编辑弹出层
 			function updatePwd(title, id) {
@@ -139,6 +145,32 @@
 				var element = layui.element;
 			});
 		</script>
+		
+		<script>
+			var app = new Vue({
+				el:'#app_teacher_index0',
+				data:{
+					teacher_name:"",
+				},
+				methods:{
+					get_teacher_name:function() {
+						$.ajax({
+							url:"/get_teacher_name",
+							type:"get",
+							contentType: "application/json", //必须这样写
+							dataType:"json",
+							context:this,
+							data:JSON.stringify(this.$data),
+							success:function(result) {
+								this.teacher_name = result.teacher_name;
+							}
+						})
+					}
+				}
+			});
+			app.get_teacher_name();
+		</script>
+		
 	</body>
 
 </html>

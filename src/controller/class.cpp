@@ -285,6 +285,58 @@ void get_class_by_class_id(const httplib::Request& req, httplib::Response& res) 
     res.body = writer.write(value_w);
 }
 
+void get_teacher_by_class_id(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(CLASS_LOG, "get_teacher_by_class_id req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+    
+    string class_id = value_r["class_id"].asString();
+    if (class_id.empty()) {
+        value_w["result"] = "false";
+        value_w["error"] = "输入错误";
+        res.body = writer.write(value_w);
+        return;
+    }
+    
+    Class class_;
+    vector<map<string,string>> teachers;
+    teachers = class_.get_teacher_by_id(class_id);
+    if (teachers.empty()) {
+        value_w["result"] = "false";
+        value_w["error"] = "null";
+        res.body = writer.write(value_w);
+        return;
+    }
+    
+    string class_name = class_.get_info_by_id(class_id)["class_name"];
+
+    Json::Value value;
+    map<string,string> tmp_map;
+    Teacher teacher;
+    for (size_t i = 0; i < teachers.size(); i++) {
+        value.clear();
+        value["class_name"] = class_name;
+        value["teacher_number"] = teachers[i]["teacher_number"];
+        tmp_map = teacher.get_info_by_number(teachers[i]["teacher_number"]); 
+        if (tmp_map["teacher_name"].empty()) {
+            continue;
+        }
+        value["teacher_name"] = tmp_map["teacher_name"];
+        value_w.append(value);
+    }
+    cout << teachers.size() << endl;
+    res.body = writer.write(value_w);
+}
+
 void delete_class_by_id(const httplib::Request& req, httplib::Response& res) {
     Json::Value value_r;
     Json::Value value_w;
@@ -383,6 +435,63 @@ void bind_class_and_student(const httplib::Request& req, httplib::Response& res)
     res.body = writer.write(value_w);
 }
 
+void bind_class_and_teacher(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(CLASS_LOG, "bind_class_and_teacher req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+
+    string class_id = value_r["class_id"].asString();
+    string teacher_number = value_r["teacher_number"].asString();
+
+    Class class_;
+    ret = class_.add_teacher_class(class_id, teacher_number);
+    if (ret == false) {
+        value_w["result"] = "false";
+    }
+    else {
+        value_w["result"] = "true";
+    }
+    res.body = writer.write(value_w);
+}
+
+void delete_class_and_teacher(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+
+    // 获取要插入的班级信息
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(CLASS_LOG, "delete_class_and_teacher req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+
+    string class_id = value_r["class_id"].asString();
+    string teacher_number = value_r["teacher_number"].asString();
+
+    Class class_;
+    ret = class_.delete_teacher_class(class_id, teacher_number);
+    if (ret == false) {
+        value_w["result"] = "false";
+    }
+    else {
+        value_w["result"] = "true";
+    }
+    res.body = writer.write(value_w);
+}
+
 void delete_class_and_student(const httplib::Request& req, httplib::Response& res) {
     Json::Value value_r;
     Json::Value value_w;
@@ -410,4 +519,53 @@ void delete_class_and_student(const httplib::Request& req, httplib::Response& re
         value_w["result"] = "true";
     }
     res.body = writer.write(value_w);
+}
+
+void get_all_student_by_class_id(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(CLASS_LOG, "get_all_student_by_class_id req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+
+    string class_id = value_r["class_id"].asString();
+    if (class_id.empty()) {
+        value_w["result"] = "false";
+        value_w["error"] = "输入错误";
+        res.body = writer.write(value_w);
+        return;
+    }
+    
+    Class class_;
+    vector<map<string,string>> students;
+    students = class_.get_student_by_id(class_id);
+    if (students .empty()) {
+        value_w["result"] = "false";
+        value_w["error"] = "null";
+        res.body = writer.write(value_w);
+        return;
+    }
+    
+    Json::Value value;
+    map<string,string> tmp_map;
+    Student student;
+    for (size_t i = 0; i < students.size(); i++) {
+        value.clear();
+        value["student_number"] = students[i]["student_number"];
+        tmp_map =student.get_info_by_number(students[i]["student_number"]); 
+        if (tmp_map["student_name"].empty()) {
+            continue;
+        }
+        value["student_name"] = tmp_map["student_name"];
+        value_w.append(value);
+    }
+    res.body = writer.write(value_w);
+    LOG(CLASS_LOG, res.body);
 }

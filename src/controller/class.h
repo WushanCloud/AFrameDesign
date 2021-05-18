@@ -46,6 +46,9 @@ void get_class_by_name_and_major(const httplib::Request& req, httplib::Response&
 // 通过课程编号查询课程
 void get_class_by_class_id(const httplib::Request& req, httplib::Response& res);
 
+// 通过课程编号查询授课教师
+void get_teacher_by_class_id(const httplib::Request& req, httplib::Response& res);
+
 // 通过课程编号删除课程
 void delete_class_by_id(const httplib::Request& req, httplib::Response& res);
 
@@ -55,7 +58,16 @@ void update_class_by_id(const httplib::Request& req, httplib::Response& res);
 // 绑定学生和课程
 void bind_class_and_student(const httplib::Request& req, httplib::Response& res);
 
+// 通过课程编号查询所有学生
+void get_all_student_by_class_id(const httplib::Request& req, httplib::Response& res);
+
+// 绑定教师和课程
+void bind_class_and_teacher(const httplib::Request& req, httplib::Response& res);
+
 // 从课程删除学生
 void delete_class_and_student(const httplib::Request& req, httplib::Response& res);
+
+// 从课程删除教师
+void delete_class_and_teacher(const httplib::Request& req, httplib::Response& res);
 #endif // !_CLASS_H_
 
