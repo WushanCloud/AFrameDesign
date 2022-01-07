@@ -125,6 +125,58 @@ bool Student::update_passwd(const std::string& student_number, const std::string
 	return ret;
 }
 
+bool Student::add_student_work_answer(const std::string& student_number, const std::string& work_topic_id, const std::string& work_answer) {
+	std::lock_guard<std::mutex> lock(mysql_db._mutex);
+    string sql = "insert into student_work_answer values('', '"+student_number+"', '"+work_topic_id+"','"+work_answer+"', -1, now())";
+	bool ret = mysql_db.MysqlQuery(sql);
+	return ret;
+}
+
+bool Student::add_student_test_answer(const std::string& student_number, const std::string& test_topic_id, const std::string& test_answer) {
+	std::lock_guard<std::mutex> lock(mysql_db._mutex);
+    string sql = "insert into student_test_answer values('', '"+student_number+"', '"+test_topic_id+"','"+test_answer+"', -1, now())";
+	bool ret = mysql_db.MysqlQuery(sql);
+	return ret;
+}
+
+std::vector<std::map<std::string, std::string>> Student::get_student_work_answer(const std::string& student_number, const std::string& work_topic_id) {
+	std::lock_guard<std::mutex> lock(mysql_db._mutex);
+    std::string sql = "select * from student_work_answer where student_number = '"+ student_number+"' and work_topic_id = '"+ work_topic_id+"'";
+    bool ret = mysql_db.MysqlQuery(sql);
+    std::vector<std::map<std::string, std::string>> v_m_ss;
+    if (ret == false) {
+        return v_m_ss;
+    }
+	MYSQL_RES* res = mysql_db.MysqlResult();
+	int len = mysql_db.MysqlNumRow(res);
+	if (len == 0) {
+		mysql_db.MysqlFreeResult(res);
+		return v_m_ss;
+	}
+
+	MYSQL_ROW row;
+    std::map<std::string, std::string> m_ss;
+	MYSQL_FIELD* fields;
+	unsigned int num_fields = mysql_db.MysqlNumFields(res);
+	fields = mysql_fetch_fields(res);
+
+	for (int i = 0; i < len; i++) {
+		row = mysql_db.MysqlFetchRow(res);
+        m_ss.clear();
+	    for (unsigned int j = 0; j < num_fields; j++) {
+		    m_ss[fields[j].name] = row[j];
+	    }
+		v_m_ss.push_back(m_ss);
+	}
+	mysql_db.MysqlFreeResult(res);
+	return v_m_ss;
+
+}
+
+std::vector<std::map<std::string, std::string>> Student::get_student_test_answer(const std::string& student_number, const std::string& test_topic_id) {
+
+}
+
 void trim(std::string& s) {
     if (s.empty()) {
         return;            
@@ -569,6 +621,26 @@ bool Class::delete_student_class(const std::string& class_id, const std::string&
     return ret;
 }
 
+std::vector<std::string> Class::get_class_by_student_number(const std::string& student_number){
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::vector<std::string> v_s;
+	std::string sql = "SELECT class_id FROM student_class where student_number = '" + student_number + "'";
+	mysql.MysqlQuery(sql);
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return v_s;
+	}
+	MYSQL_ROW row;
+	for (int i = 0; i < len; i++) {
+		row = mysql.MysqlFetchRow(res);
+		v_s.push_back(row[0]);
+	}
+	mysql.MysqlFreeResult(res);
+	return v_s;
+}
+
 /**
  * ×÷ÒµÀà
  */
@@ -654,3 +726,157 @@ std::vector<std::map<std::string, std::string>> Work::get_test_by_id(const std::
 	mysql.MysqlFreeResult(res);
 	return v_m_ss;
 }
+
+std::vector<std::map<std::string, std::string>> Work::get_work_by_work_id(const std::string& class_work_id) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::string sql = "select * from class_work where class_work_id = " + class_work_id;
+    cout << sql <<endl;
+    bool ret = mysql.MysqlQuery(sql);
+    std::vector<std::map<std::string, std::string>> v_m_ss;
+    if (ret == false) {
+        return v_m_ss;
+    }
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return v_m_ss;
+	}
+
+	MYSQL_ROW row;
+    std::map<std::string, std::string> m_ss;
+	MYSQL_FIELD* fields;
+	unsigned int num_fields = mysql.MysqlNumFields(res);
+	fields = mysql_fetch_fields(res);
+
+	for (int i = 0; i < len; i++) {
+		row = mysql.MysqlFetchRow(res);
+        m_ss.clear();
+	    for (unsigned int j = 0; j < num_fields; j++) {
+		    m_ss[fields[j].name] = row[j];
+	    }
+		v_m_ss.push_back(m_ss);
+	}
+	mysql.MysqlFreeResult(res);
+	return v_m_ss;
+}
+
+std::vector<std::map<std::string, std::string>> Work::get_test_by_test_id(const std::string& class_test_id) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::string sql = "select * from class_test where class_test_id = " + class_test_id;
+    cout << sql <<endl;
+    bool ret = mysql.MysqlQuery(sql);
+    std::vector<std::map<std::string, std::string>> v_m_ss;
+    if (ret == false) {
+        return v_m_ss;
+    }
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return v_m_ss;
+	}
+
+	MYSQL_ROW row;
+    std::map<std::string, std::string> m_ss;
+	MYSQL_FIELD* fields;
+	unsigned int num_fields = mysql.MysqlNumFields(res);
+	fields = mysql_fetch_fields(res);
+
+	for (int i = 0; i < len; i++) {
+		row = mysql.MysqlFetchRow(res);
+        m_ss.clear();
+	    for (unsigned int j = 0; j < num_fields; j++) {
+		    m_ss[fields[j].name] = row[j];
+	    }
+		v_m_ss.push_back(m_ss);
+	}
+	mysql.MysqlFreeResult(res);
+	return v_m_ss;
+}
+
+
+bool Work::add_work_title(const std::string& class_work_id, const std::string& topic_title, const std::string& topic_type, const std::string& topic_sorce, const std::string& topic_a, const std::string& topic_b, const std::string& topic_c, const std::string& topic_d) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+    std::string sql = "insert into work_topic values('','" + class_work_id + "', '" + topic_title + "', '"+topic_type+"', '"+topic_sorce+"', '"+topic_a+"', '"+topic_b+"', '"+topic_c+"', '"+topic_d+"' )";
+	bool ret = mysql.MysqlQuery(sql);
+    return ret;
+}
+
+bool Work::add_test_title(const std::string& class_work_id, const std::string& topic_title, const string& topic_sorce) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+    std::string sql = "insert into test_topic values('','" + class_work_id + "', '" + topic_title + "', '"+topic_sorce+"')";
+	bool ret = mysql.MysqlQuery(sql);
+    return ret;
+}
+
+std::vector<std::map<std::string, std::string>> Work::get_work_topic_by_work_id(const std::string& class_work_id) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::string sql = "select * from work_topic where class_work_id = " + class_work_id;
+    cout << sql <<endl;
+    bool ret = mysql.MysqlQuery(sql);
+    std::vector<std::map<std::string, std::string>> v_m_ss;
+    if (ret == false) {
+        return v_m_ss;
+    }
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return v_m_ss;
+	}
+
+	MYSQL_ROW row;
+    std::map<std::string, std::string> m_ss;
+	MYSQL_FIELD* fields;
+	unsigned int num_fields = mysql.MysqlNumFields(res);
+	fields = mysql_fetch_fields(res);
+
+	for (int i = 0; i < len; i++) {
+		row = mysql.MysqlFetchRow(res);
+        m_ss.clear();
+	    for (unsigned int j = 0; j < num_fields; j++) {
+		    m_ss[fields[j].name] = row[j];
+	    }
+		v_m_ss.push_back(m_ss);
+	}
+	mysql.MysqlFreeResult(res);
+	return v_m_ss;
+}
+
+std::vector<std::map<std::string, std::string>> Work::get_test_topic_by_test_id(const std::string& class_test_id) {
+	std::lock_guard<std::mutex> lock(mysql._mutex);
+	std::string sql = "select * from test_topic where class_test_id = " + class_test_id;
+    cout << sql <<endl;
+    bool ret = mysql.MysqlQuery(sql);
+    std::vector<std::map<std::string, std::string>> v_m_ss;
+    if (ret == false) {
+        return v_m_ss;
+    }
+	MYSQL_RES* res = mysql.MysqlResult();
+	int len = mysql.MysqlNumRow(res);
+	if (len == 0) {
+		mysql.MysqlFreeResult(res);
+		return v_m_ss;
+	}
+
+	MYSQL_ROW row;
+    std::map<std::string, std::string> m_ss;
+	MYSQL_FIELD* fields;
+	unsigned int num_fields = mysql.MysqlNumFields(res);
+	fields = mysql_fetch_fields(res);
+
+	for (int i = 0; i < len; i++) {
+		row = mysql.MysqlFetchRow(res);
+        m_ss.clear();
+	    for (unsigned int j = 0; j < num_fields; j++) {
+		    m_ss[fields[j].name] = row[j];
+	    }
+		v_m_ss.push_back(m_ss);
+	}
+	mysql.MysqlFreeResult(res);
+	return v_m_ss;
+}
+
+
+

@@ -17,20 +17,17 @@
 	</head>
 
 	<body>
-	<div id="app_teacher_class_find_1">
+	<div id="app_student_class_find">
 		<div class="admin-content-body">
 			<div class="am-cf am-padding am-padding-bottom-0">
-				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">课堂作业管理</strong><small></small></div>
+				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">我的课程信息</strong><small></small></div>
 			</div>
 
 			<hr>
-
-			<div class="am-u-sm-12 am-u-md-3">
-				<div class="am-input-group am-input-group-sm">
-					<input type="text" v-model="class_work_id" required  lay-verify="required" placeholder="请输入课程编号" autocomplete="off" class="layui-input">
-					<span class="am-input-group-btn">
-						<button class="layui-btn layui-btn-normal" v-on:click="find_work" type="button">搜索</button>
-					</span>
+			
+			<div class="am-g">
+				<div>
+					<button class="layui-btn layui-btn-radius layui-btn-normal" v-on:click="get_class()" >显示我的课程信息</button>
 				</div>
 			</div>
 			
@@ -43,8 +40,7 @@
 									<th class="table-title">课程编号</th>
 									<th class="table-title">课程名</th>
 									<th class="table-type">课程专业</th>
-									<th class="table-type">课程班级</th>
-									<th class="table-type">课程简介</th>
+									<th class="table-type">课程介绍</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -53,7 +49,6 @@
 									<td>{{item.class_id}}</td>
 									<td>{{item.class_name}}</td>
 									<td>{{item.class_major}}</td>
-									<td>{{item.class_class}}</td>
 									<td>{{item.class_info}}</td>
 								</tr>
 								</template>
@@ -64,20 +59,22 @@
 					</form>
 				</div>
 			</div>
+			
+			<hr>
+			
 		</div>
 	</div>
 	
 	<script>
 		var app = new Vue({
-			el:'#app_teacher_class_find_1',
+			el:'#app_student_class_find',
 			data:{
-				class_work_id:"",
 				items:"",
 			},
 			methods:{
-				find_work:function() {
+				get_class:function() {
 					$.ajax({
-						url:"/get_class_work_by_class_work_id",
+						url:"/get_student_class",
 						type:"get",
 						contentType: "application/json", //必须这样写
 						dataType:"json",

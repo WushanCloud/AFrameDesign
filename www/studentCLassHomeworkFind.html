@@ -17,10 +17,10 @@
 	</head>
 
 	<body>
-	<div id="app_teacher_class_find_2">
+	<div id="app_student_class_find_1">
 		<div class="admin-content-body">
 			<div class="am-cf am-padding am-padding-bottom-0">
-				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">查看课程实验</strong><small></small></div>
+				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">查看课程作业</strong><small></small></div>
 			</div>
 
 			<hr>
@@ -29,7 +29,7 @@
 				<div class="am-input-group am-input-group-sm">
 					<input type="text" v-model="class_id" required  lay-verify="required" placeholder="请输入课程编号" autocomplete="off" class="layui-input">
 					<span class="am-input-group-btn">
-						<button class="layui-btn layui-btn-normal" v-on:click="find_class" type="button">搜索</button>
+						<button class="layui-btn layui-btn-normal" v-on:click="find_work" type="button">搜索</button>
 					</span>
 				</div>
 			</div>
@@ -40,10 +40,10 @@
 						<table class="am-table am-table-striped am-table-hover table-main">
 							<thead>
 								<tr>
-									<th class="table-title">课程编号</th>
-									<th class="table-title">实验编号</th>
-									<th class="table-title">实验名</th>
-									<th class="table-type">实验总分</th>
+									<th class="table-type">课程编号</th>
+									<th class="table-type">作业编号</th>
+									<th class="table-type">作业名</th>
+									<th class="table-type">作业总分</th>
 									<th class="table-type">创建时间</th>
 								</tr>
 							</thead>
@@ -51,10 +51,10 @@
 								<template v-for="item in items">
 								<tr>
 									<td>{{item.class_id}}</td>
-									<td>{{item.class_test_id}}</td>
-									<td>{{item.test_name}}</td>
-									<td>{{item.test_sorce}}</td>
-									<td>{{item.test_createtime}}</td>
+									<td>{{item.class_work_id}}</td>
+									<td>{{item.work_name}}</td>
+									<td>{{item.work_sorce}}</td>
+									<td>{{item.work_createtime}}</td>
 								</tr>
 								</template>
 							</tbody>
@@ -65,16 +65,15 @@
 				</div>
 			</div>
 			
-			
 			<div class="am-cf am-padding am-padding-bottom-0">
-				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">查看课程实验题目详情</strong><small></small></div>
+				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">查看课程作业题目详情</strong><small></small></div>
 			</div>
 			<hr />
 			<div class="am-u-sm-12 am-u-md-3">
 				<div class="am-input-group am-input-group-sm">
-					<input type="text" v-model="class_test_id" required  lay-verify="required" placeholder="请输入作业编号查看详情" autocomplete="off" class="layui-input">
+					<input type="text" v-model="class_work_id" required  lay-verify="required" placeholder="请输入作业编号查看详情" autocomplete="off" class="layui-input">
 					<span class="am-input-group-btn">
-						<button class="layui-btn layui-btn-normal" v-on:click="get_test_title" type="button">搜索</button>
+						<button class="layui-btn layui-btn-normal" v-on:click="get_work_title" type="button">搜索</button>
 					</span>
 				</div>
 			</div>
@@ -85,8 +84,13 @@
 						<table class="am-table am-table-striped am-table-hover table-main">
 							<thead>
 								<tr>
-									<th class="table-type">实验题目</th>
+									<th class="table-type">作业题目</th>
 									<th class="table-type">题目分值</th>
+									<th class="table-type">题目类型</th>
+									<th class="table-type">选项A</th>
+									<th class="table-type">选项B</th>
+									<th class="table-type">选项C</th>
+									<th class="table-type">选项D</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -94,6 +98,11 @@
 								<tr>
 									<td>{{item.topic_title}}</td>
 									<td>{{item.topic_sorce}}</td>
+									<td>{{put_type(item.topic_type)}}</td>
+									<td>{{item.topic_a}}</td>
+									<td>{{item.topic_b}}</td>
+									<td>{{item.topic_c}}</td>
+									<td>{{item.topic_d}}</td>
 								</tr>
 								</template>
 							</tbody>
@@ -108,17 +117,17 @@
 	
 	<script>
 		var app = new Vue({
-			el:'#app_teacher_class_find_2',
+			el:'#app_student_class_find_1',
 			data:{
 				class_id:"",
-				class_test_id:"",
+				class_work_id:"",
 				items:"",
 				items_t:"",
 			},
 			methods:{
-				find_class:function() {
+				find_work:function() {
 					$.ajax({
-						url:"/get_class_test_by_class_id",
+						url:"/get_class_work_by_class_id",
 						type:"post",
 						contentType: "application/json", //必须这样写
 						dataType:"json",
@@ -129,9 +138,9 @@
 						}
 					})
 				},
-				get_test_title:function() {
+				get_work_title:function() {
 					$.ajax({
-						url:"/get_test_topic_by_class_test_id",
+						url:"/get_work_topic_by_class_work_id",
 						type:"post",
 						contentType: "application/json", //必须这样写
 						dataType:"json",
@@ -141,6 +150,15 @@
 							this.items_t = result;
 						}
 					})
+				},
+				put_type(type){
+					if (type == "1") {
+						return "单选";
+					}else if (type == "2") {
+						return "多选";
+					}else if (type == "3") {
+						return "填空";
+					}
 				}
 			}
 		});

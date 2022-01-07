@@ -37,6 +37,18 @@ public:
 
 	// 初始化学生密码
 	bool update_passwd(const std::string& student_number, const std::string& student_passwd = "123456");
+
+    // 做作业
+    bool add_student_work_answer(const std::string& student_number, const std::string& work_topic_id, const std::string& work_answer);
+
+    // 做实验
+    bool add_student_test_answer(const std::string& student_number, const std::string& test_topic_id, const std::string& test_answer);
+
+    // 通过学号和作业编号获取学生作业答案
+    std::vector<std::map<std::string, std::string>> get_student_work_answer(const std::string& student_number, const std::string& work_topic_id);
+
+    // 通过学号和作业编号获取学生作业答案
+    std::vector<std::map<std::string, std::string>> get_student_test_answer(const std::string& student_number, const std::string& test_topic_id);
 };
 
 class Teacher {
@@ -138,6 +150,9 @@ public:
 
     // 给课程删除学生
     bool delete_student_class(const std::string& class_id, const std::string& student_number);
+
+    // 通过学生查找课程
+    std::vector<std::string> get_class_by_student_number(const std::string& student_number);
 };
 
 /***
@@ -158,5 +173,25 @@ public:
 
     // 通过课程编号查询实验
     std::vector<std::map<std::string, std::string>> get_test_by_id(const std::string& class_id);
+
+    // 通过作业编号查询作业
+    std::vector<std::map<std::string, std::string>> get_work_by_work_id(const std::string& class_work_id);
+
+    // 通过实验编号查询实验
+    std::vector<std::map<std::string, std::string>> get_test_by_test_id(const std::string& class_test_id);
+
+    // 添加作业题目信息
+    bool add_work_title(const std::string& class_work_id, const std::string& topic_title, const std::string& topic_type, const std::string& topic_sorce, const std::string& topic_a, const std::string& topic_b, const std::string& topic_c, const std::string& topic_d);
+
+    // 添加作业题目信息
+    bool add_test_title(const std::string& class_work_id, const std::string& topic_title, const string& topic_sorce);
+
+    // 通过作业编号查询作业题目
+    std::vector<std::map<std::string, std::string>> get_work_topic_by_work_id(const std::string& class_work_id);
+
+    // 通过实验编号查询实验题目
+    std::vector<std::map<std::string, std::string>> get_test_topic_by_test_id(const std::string& class_test_id);
+
+
 };
 

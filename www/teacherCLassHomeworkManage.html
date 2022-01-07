@@ -24,16 +24,12 @@
 			</div>
 
 			<hr>
-			<div class="am-g">
-				<div>
-					<h2>创建作业</h2><br />
-				</div>
-			</div>
+			
 			<div class="am-u-sm-12 am-u-md-3">
 				<div class="am-input-group am-input-group-sm">
-					<input type="text" v-model="class_id" required  lay-verify="required" placeholder="请输入课程作业编号" autocomplete="off" class="layui-input">
+					<input type="text" v-model="class_work_id" required  lay-verify="required" placeholder="请输入课程作业编号" autocomplete="off" class="layui-input">
 					<span class="am-input-group-btn">
-						<button class="layui-btn layui-btn-normal" v-on:click="find_class" type="button">搜索</button>
+						<button class="layui-btn layui-btn-normal" v-on:click="find_work" type="button">搜索</button>
 					</span>
 				</div>
 			</div>
@@ -75,55 +71,56 @@
 				</div>
 			</div>
 			
-			<form class="layui-form">
+			
 				<div class="layui-form-item">
 				  <label class="layui-form-label">类型</label>
 				  <div class="layui-input-block">
-				    <input type="radio" name="sex" value="" title="单选" checked>
-				    <input type="radio" name="sex" value="" title="多选" >
-				    <input type="radio" name="sex" value="" title="填空" >
+				    <input id="one" type="radio" v-model="topic_type" value="1"><label for="one">单选 </label> 
+				    <input id="two"  type="radio" v-model="topic_type" value="2"><label for="two">多选 </label> 
+				    <input id="thr" type="radio" v-model="topic_type" value="3"><label for="thr">填空 </label>
 				  </div>
 				</div>
+			<form class="layui-form">
 				<div class="layui-form-item">
 					<label class="layui-form-label">分值</label>
 					<div class="layui-input-block">
-						<input type="text" name="title" required  lay-verify="required" placeholder="请输入题目分值" autocomplete="off" class="layui-input">
+						<input type="text" v-model="topic_sorce" required  lay-verify="required" placeholder="请输入题目分值" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item layui-form-text">
 				  <label class="layui-form-label">题目</label>
 				  <div class="layui-input-block">
-				    <textarea name="desc" placeholder="请输入题目内容" required  lay-verify="required" class="layui-textarea"></textarea>
+				    <textarea v-model="topic_title" placeholder="请输入题目内容" required  lay-verify="required" class="layui-textarea"></textarea>
 				  </div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">选项A</label>
 					<div class="layui-input-block">
-						<input type="text" name="title"  placeholder="请输入选项A" autocomplete="off" class="layui-input">
+						<input type="text" v-model="topic_a"  placeholder="请输入选项A" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">选项B</label>
 					<div class="layui-input-block">
-						<input type="text" name="title"  placeholder="请输入选项B" autocomplete="off" class="layui-input">
+						<input type="text" v-model="topic_b" placeholder="请输入选项B" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">选项C</label>
 					<div class="layui-input-block">
-						<input type="text" name="title"  placeholder="请输入选项C" autocomplete="off" class="layui-input">
+						<input type="text" v-model="topic_c"  placeholder="请输入选项C" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">选项D</label>
 					<div class="layui-input-block">
-						<input type="text" name="title"  placeholder="请输入选项D" autocomplete="off" class="layui-input">
+						<input type="text" v-model="topic_d"  placeholder="请输入选项D" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 			  
 				<div class="layui-form-item">
 					<div class="layui-input-block">
-						<button class="layui-btn" lay-submit >立即提交</button>
+						<button class="layui-btn" v-on:click="add_title()" lay-submit >立即提交</button>
 						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 					</div>
 				</div>
@@ -135,20 +132,41 @@
 		var app = new Vue({
 			el:'#app_teacher_class_homework',
 			data:{
-				class_id:"",
+				class_work_id:"",
 				items:"",
+				
+				topic_title:"",
+				topic_type:"1",
+				topic_sorce:"",
+				topic_a:"",
+				topic_b:"",
+				topic_c:"",
+				topic_d:"",
 			},
 			methods:{
-				find_class:function() {
+				find_work:function() {
 					$.ajax({
-						url:"/",
-						type:"get",
+						url:"/get_class_work_by_class_work_id",
+						type:"post",
 						contentType: "application/json", //必须这样写
 						dataType:"json",
 						context:this,
 						data:JSON.stringify(this.$data),
 						success:function(result) {
 							this.items = result;
+						}
+					})
+				},
+				add_title:function() {
+					$.ajax({
+						url:"/add_class_work_title",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
 						}
 					})
 				}

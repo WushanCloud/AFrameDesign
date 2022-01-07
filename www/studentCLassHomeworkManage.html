@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/admin.css" />
+		<!-- 引入 layui.css -->
+		<link rel="stylesheet" href="//unpkg.com/layui@2.6.6/dist/css/layui.css">
+		 
+		<!-- 引入 layui.js -->
+		<script src="//unpkg.com/layui@2.6.4/dist/layui.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<title>Layui</title>
+		
+	</head>
+
+	<body>
+	<div id="app_student_homework">
+		<div class="admin-content-body">
+			<div class="am-cf am-padding am-padding-bottom-0">
+				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">做作业</strong><small></small></div>
+			</div>
+
+			<hr>
+			
+			<div class="am-u-sm-12 am-u-md-3">
+				<div class="am-input-group am-input-group-sm">
+					<input type="text" v-model="class_work_id" required  lay-verify="required" placeholder="请输入课程作业编号" autocomplete="off" class="layui-input">
+					<span class="am-input-group-btn">
+						<button class="layui-btn layui-btn-normal" v-on:click="find_work" type="button">搜索</button>
+					</span>
+				</div>
+			</div>
+			
+			<div class="am-g">
+				<div class="am-u-sm-12">
+					<div v-for="item in items">
+						<template v-if="item.topic_type == 1">
+						<div class="layui-card layui-bg-gray">
+							<ul>
+								<li>
+								<div class="layui-card-header layui-bg-cyan">
+									题目：{{item.topic_title}}
+									<li>
+										{{put_type(item.topic_type)}}：{{item.topic_sorce}}分
+									</li>
+								</div>
+								</li>
+								<div class="layui-card-body layui-bg-gray">
+								
+								<li>
+									<input type="radio" v-model="work_answer" id="a" value="A" />
+									<label for="a">{{item.topic_a}}</label>
+								</li>
+								<li>
+									<input type="radio" v-model="work_answer" id="b" value="B" />
+									<label for="b">{{item.topic_b}}</label>
+								</li>
+								<li>
+									<input type="radio" v-model="work_answer" id="c" value="C" />
+									<label for="c">{{item.topic_c}}</label>
+								</li>
+								<li>
+									<input type="radio" v-model="work_answer" id="d" value="D" />
+									<label for="d">{{item.topic_d}}</label>
+								</li>
+								<button type="button" class="layui-btn layui-btn-sm" v-on:click="add_answer(item.work_topic_id)"><i class="layui-icon">&#xe608;</i> 添加 </button>
+								</div>
+							</ul>
+						</div>
+						</template>
+					</div>
+					
+					<!-- <div class="layui-form-item layui-form-text">
+					  <label class="layui-form-label">我的答案</label>
+					  <div class="layui-input-block">
+					    <textarea v-model="work_answer" placeholder="请输入题目答案" required  lay-verify="required" class="layui-textarea"></textarea>
+					  </div>
+					</div> -->
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		var app = new Vue({
+			el:'#app_student_homework',
+			data:{
+				class_work_id:"",
+				items:"",
+				
+				work_answer:"",
+				work_topic_id:"",
+			},
+			methods:{
+				find_work:function() {
+					$.ajax({
+						url:"/get_work_topic_by_class_work_id",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							this.items = result;
+						}
+					})
+				},
+				put_type(type){
+					if (type == "1") {
+						return "单选";
+					}else if (type == "2") {
+						return "多选";
+					}else if (type == "3") {
+						return "填空";
+					}
+				},
+				add_answer(topic_id){
+					this.work_topic_id = topic_id;
+					$.ajax({
+						url:"/add_student_work_answer",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+						}
+					})
+				}
+			}
+		});
+	</script>
+	</body>
+</html>

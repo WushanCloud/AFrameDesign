@@ -13,6 +13,9 @@
 // 获取学生名字
 void get_student_name(const httplib::Request& req, httplib::Response& res); 
 
+// 获取学生个人信息
+void get_student_info(const httplib::Request& req, httplib::Response& res);
+
 // 添加一个学生
 void add_student(const httplib::Request& req, httplib::Response& res);
 
@@ -28,4 +31,21 @@ void delete_student(const httplib::Request& req, httplib::Response& res);
 // 初始化一位学生的密码
 void update_student_passwd(const httplib::Request& req, httplib::Response& res);
 
+// 获取同班同学列表
+void get_classmate(const httplib::Request& req, httplib::Response& res);
+
+// 查找学生课程
+void get_student_class(const httplib::Request& req, httplib::Response& res);
+
+// 做作业
+void add_student_work_answer(const httplib::Request& req, httplib::Response& res);
+
+// 做实验
+void add_student_test_answer(const httplib::Request& req, httplib::Response& res);
+
+// 获得学生作业答案
+void get_student_work_answer(const httplib::Request& req, httplib::Response& res);
+
+// 获得学生实验答案
+void get_student_test_answer(const httplib::Request& req, httplib::Response& res);
 #endif // _STUDENT_H

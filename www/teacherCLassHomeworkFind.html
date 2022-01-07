@@ -29,7 +29,7 @@
 				<div class="am-input-group am-input-group-sm">
 					<input type="text" v-model="class_id" required  lay-verify="required" placeholder="请输入课程编号" autocomplete="off" class="layui-input">
 					<span class="am-input-group-btn">
-						<button class="layui-btn layui-btn-normal" v-on:click="find_class" type="button">搜索</button>
+						<button class="layui-btn layui-btn-normal" v-on:click="find_work" type="button">搜索</button>
 					</span>
 				</div>
 			</div>
@@ -40,9 +40,9 @@
 						<table class="am-table am-table-striped am-table-hover table-main">
 							<thead>
 								<tr>
-									<th class="table-title">课程编号</th>
-									<th class="table-title">作业编号</th>
-									<th class="table-title">作业名</th>
+									<th class="table-type">课程编号</th>
+									<th class="table-type">作业编号</th>
+									<th class="table-type">作业名</th>
 									<th class="table-type">作业总分</th>
 									<th class="table-type">创建时间</th>
 								</tr>
@@ -64,6 +64,54 @@
 					</form>
 				</div>
 			</div>
+			
+			<div class="am-cf am-padding am-padding-bottom-0">
+				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">查看课程作业题目详情</strong><small></small></div>
+			</div>
+			<hr />
+			<div class="am-u-sm-12 am-u-md-3">
+				<div class="am-input-group am-input-group-sm">
+					<input type="text" v-model="class_work_id" required  lay-verify="required" placeholder="请输入作业编号查看详情" autocomplete="off" class="layui-input">
+					<span class="am-input-group-btn">
+						<button class="layui-btn layui-btn-normal" v-on:click="get_work_title" type="button">搜索</button>
+					</span>
+				</div>
+			</div>
+			
+			<div class="am-g">
+				<div class="am-u-sm-12">
+					<form class="am-form">
+						<table class="am-table am-table-striped am-table-hover table-main">
+							<thead>
+								<tr>
+									<th class="table-type">作业题目</th>
+									<th class="table-type">题目分值</th>
+									<th class="table-type">题目类型</th>
+									<th class="table-type">选项A</th>
+									<th class="table-type">选项B</th>
+									<th class="table-type">选项C</th>
+									<th class="table-type">选项D</th>
+								</tr>
+							</thead>
+							<tbody>
+								<template v-for="item in items_t">
+								<tr>
+									<td>{{item.topic_title}}</td>
+									<td>{{item.topic_sorce}}</td>
+									<td>{{put_type(item.topic_type)}}</td>
+									<td>{{item.topic_a}}</td>
+									<td>{{item.topic_b}}</td>
+									<td>{{item.topic_c}}</td>
+									<td>{{item.topic_d}}</td>
+								</tr>
+								</template>
+							</tbody>
+						</table>
+						
+						<hr>
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
 	
@@ -72,10 +120,12 @@
 			el:'#app_teacher_class_find_1',
 			data:{
 				class_id:"",
+				class_work_id:"",
 				items:"",
+				items_t:"",
 			},
 			methods:{
-				find_class:function() {
+				find_work:function() {
 					$.ajax({
 						url:"/get_class_work_by_class_id",
 						type:"post",
@@ -87,6 +137,28 @@
 							this.items = result;
 						}
 					})
+				},
+				get_work_title:function() {
+					$.ajax({
+						url:"/get_work_topic_by_class_work_id",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							this.items_t = result;
+						}
+					})
+				},
+				put_type(type){
+					if (type == "1") {
+						return "单选";
+					}else if (type == "2") {
+						return "多选";
+					}else if (type == "3") {
+						return "填空";
+					}
 				}
 			}
 		});

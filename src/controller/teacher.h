@@ -45,6 +45,25 @@ void add_class_test(const httplib::Request& req, httplib::Response& res);
 // 通过课程编号查询作业
 void get_class_work_by_class_id(const httplib::Request& req, httplib::Response& res);
 
-// 通过课程编号查询作业
+// 通过课程编号查询实验
 void get_class_test_by_class_id(const httplib::Request& req, httplib::Response& res);
+
+// 通过作业编号获得作业
+void get_class_work_by_class_work_id(const httplib::Request& req, httplib::Response& res);
+
+// 通过实验编号获得实验
+void get_class_test_by_class_test_id(const httplib::Request& req, httplib::Response& res);
+
+// 添加作业题目信息
+void add_class_work_title(const httplib::Request& req, httplib::Response& res);
+
+// 添加实验题目信息
+void add_class_test_title(const httplib::Request& req, httplib::Response& res);
+
+// 通过作业编号获得作业题目
+void get_work_topic_by_class_work_id(const httplib::Request& req, httplib::Response& res);
+
+// 通过作业编号获得作业题目
+void get_test_topic_by_class_test_id(const httplib::Request& req, httplib::Response& res);
+
 #endif // _TEACHER_H

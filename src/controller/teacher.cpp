@@ -354,3 +354,213 @@ void get_class_test_by_class_id(const httplib::Request& req, httplib::Response& 
     res.body = writer.write(value_w);
     cout << res.body << endl;
 }
+
+void get_class_work_by_class_work_id(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(TEACHER_LOG, "get_class_work_by_class_work_id req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+    
+    Work work;
+    vector<map<string,string>> info;
+    info = work.get_work_by_work_id(value_r["class_work_id"].asString());
+    if (info.empty()) {
+        value_w["result"] = "false";
+        value_w["error"] = "null";
+        res.body = writer.write(value_w);
+        return;
+    }
+
+    Json::Value value;
+    for (size_t i = 0; i < info.size(); i++) {
+        value.clear();
+        for (auto it = info[i].begin(); it != info[i].end(); it++) {
+            value[it->first] = it->second;
+        }
+        value_w.append(value);
+    }
+    res.body = writer.write(value_w);
+    cout << res.body << endl;
+}
+
+void get_class_test_by_class_test_id(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(TEACHER_LOG, "get_class_test_by_class_test_id req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+    
+    Work work;
+    vector<map<string,string>> info;
+    info = work.get_test_by_test_id(value_r["class_test_id"].asString());
+    if (info.empty()) {
+        value_w["result"] = "false";
+        value_w["error"] = "null";
+        res.body = writer.write(value_w);
+        return;
+    }
+
+    Json::Value value;
+    for (size_t i = 0; i < info.size(); i++) {
+        value.clear();
+        for (auto it = info[i].begin(); it != info[i].end(); it++) {
+            value[it->first] = it->second;
+        }
+        value_w.append(value);
+    }
+    res.body = writer.write(value_w);
+    cout << res.body << endl;
+}
+
+void add_class_work_title(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+    
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(TEACHER_LOG, "add_class_work_title req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+
+    string class_work_id = value_r["class_work_id"].asString();
+    string topic_title   = value_r["topic_title"].asString();
+    string topic_type    = value_r["topic_type"].asString();
+    string topic_sorce   = value_r["topic_sorce"].asString();
+    string topic_a  = value_r["topic_a"].asString();
+    string topic_b  = value_r["topic_b"].asString();
+    string topic_c  = value_r["topic_c"].asString();
+    string topic_d  = value_r["topic_d"].asString();
+
+    Work work;
+    ret = work.add_work_title(class_work_id, topic_title, topic_type, topic_sorce, topic_a, topic_b, topic_c, topic_d);
+    if (ret == false) {
+        value_w["result"] = "false";
+    }
+    else {
+        value_w["result"] = "true";
+    }
+    res.body = writer.write(value_w);
+    cout << res.body << endl;
+}
+
+void add_class_test_title(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+    
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(TEACHER_LOG, "add_class_test_title req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+
+    string class_test_id = value_r["class_test_id"].asString();
+    string topic_title   = value_r["topic_title"].asString();
+    string topic_sorce   = value_r["topic_sorce"].asString();
+
+    Work work;
+    ret = work.add_test_title(class_test_id, topic_title,topic_sorce);
+    if (ret == false) {
+        value_w["result"] = "false";
+    }
+    else {
+        value_w["result"] = "true";
+    }
+    res.body = writer.write(value_w);
+    cout << res.body << endl;
+
+}
+
+void get_work_topic_by_class_work_id(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(TEACHER_LOG, "get_work_topic_by_class_work_id req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+    
+    Work work;
+    vector<map<string,string>> info;
+    info = work.get_work_topic_by_work_id(value_r["class_work_id"].asString());
+    if (info.empty()) {
+        value_w["result"] = "false";
+        value_w["error"] = "null";
+        res.body = writer.write(value_w);
+        return;
+    }
+
+    Json::Value value;
+    for (size_t i = 0; i < info.size(); i++) {
+        value.clear();
+        for (auto it = info[i].begin(); it != info[i].end(); it++) {
+            value[it->first] = it->second;
+        }
+        value_w.append(value);
+    }
+    res.body = writer.write(value_w);
+    cout << res.body << endl;
+}
+
+void get_test_topic_by_class_test_id(const httplib::Request& req, httplib::Response& res) {
+    Json::Value value_r;
+    Json::Value value_w;
+    Json::Reader reader;
+    Json::FastWriter writer;
+
+    bool ret = reader.parse(req.body, value_r);
+    if (ret == false) {
+        LOG(TEACHER_LOG, "get_test_topic_by_class_test_id req的json解析失败");
+        value_w["result"] = "false";
+        res.body = writer.write(value_w);
+        return;
+    }
+    
+    Work work;
+    vector<map<string,string>> info;
+    info = work.get_test_topic_by_test_id(value_r["class_test_id"].asString());
+    if (info.empty()) {
+        value_w["result"] = "false";
+        value_w["error"] = "null";
+        res.body = writer.write(value_w);
+        return;
+    }
+
+    Json::Value value;
+    for (size_t i = 0; i < info.size(); i++) {
+        value.clear();
+        for (auto it = info[i].begin(); it != info[i].end(); it++) {
+            value[it->first] = it->second;
+        }
+        value_w.append(value);
+    }
+    res.body = writer.write(value_w);
+    cout << res.body << endl;
+}

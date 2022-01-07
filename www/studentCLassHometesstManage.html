@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/amazeui.min.css" />
+		<link rel="stylesheet" href="css/admin.css" />
+		<!-- 引入 layui.css -->
+		<link rel="stylesheet" href="//unpkg.com/layui@2.6.6/dist/css/layui.css">
+		 
+		<!-- 引入 layui.js -->
+		<script src="//unpkg.com/layui@2.6.4/dist/layui.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<title>Layui</title>
+		
+	</head>
+
+	<body>
+	<div id="app_student_hometest">
+		<div class="admin-content-body">
+			<div class="am-cf am-padding am-padding-bottom-0">
+				<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">做实验</strong><small></small></div>
+			</div>
+
+			<hr>
+			
+			<div class="am-u-sm-12 am-u-md-3">
+				<div class="am-input-group am-input-group-sm">
+					<input type="text" v-model="class_test_id" required  lay-verify="required" placeholder="请输入课程作业编号" autocomplete="off" class="layui-input">
+					<span class="am-input-group-btn">
+						<button class="layui-btn layui-btn-normal" v-on:click="find_test" type="button">搜索</button>
+					</span>
+				</div>
+			</div>
+			
+			<div class="am-g">
+				<div class="am-u-sm-12">
+					<div v-for="item in items">
+						<template>
+						<div class="layui-card layui-bg-gray">
+							<ul>
+								<li>
+								<div class="layui-card-header layui-bg-green">
+									题目：{{item.topic_title}}
+									<li>
+										{{item.topic_sorce}}分
+									</li>
+								</div>
+								</li>
+								<div class="layui-card-body layui-bg-gray">
+									<div class="layui-form-item layui-form-text">
+										<label class="layui-form-label">我的答案</label>
+										<div class="layui-input-block">
+											<textarea v-model="test_answer" placeholder="请输入题目答案" required  lay-verify="required" class="layui-textarea"></textarea>
+										</div>
+									</div>
+									<button type="button" class="layui-btn layui-bg-cyan" v-on:click="add_answer(item.test_topic_id)"><i class="layui-icon">&#xe608;</i> 添加 </button>
+								</div>
+							</ul>
+						</div>
+						</template>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		var app = new Vue({
+			el:'#app_student_hometest',
+			data:{
+				class_test_id:"",
+				items:"",
+				
+				test_answer:"",
+				test_topic_id:"",
+			},
+			methods:{
+				find_test:function() {
+					$.ajax({
+						url:"/get_test_topic_by_class_test_id",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							this.items = result;
+						}
+					})
+				},
+				put_type(type){
+					if (type == "1") {
+						return "单选";
+					}else if (type == "2") {
+						return "多选";
+					}else if (type == "3") {
+						return "填空";
+					}
+				},
+				add_answer(topic_id){
+					this.test_topic_id = topic_id;
+					$.ajax({
+						url:"/add_student_test_answer",
+						type:"post",
+						contentType: "application/json", //必须这样写
+						dataType:"json",
+						context:this,
+						data:JSON.stringify(this.$data),
+						success:function(result) {
+							alert(result.result);
+						}
+					})
+				}
+			}
+		});
+	</script>
+	</body>
+</html>

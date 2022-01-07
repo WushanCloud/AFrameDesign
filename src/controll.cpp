@@ -52,6 +52,11 @@ GetControll::GetControll(){
 
     // 教师
     PUSH_MOD(get_teacher_class);
+
+    // 学生
+    PUSH_MOD(get_classmate);
+    PUSH_MOD(get_student_info);
+    PUSH_MOD(get_student_class);
 }
 
 PostControll::PostControll(){
@@ -94,6 +99,15 @@ PostControll::PostControll(){
     PUSH_MOD(add_class_test);
     PUSH_MOD(get_class_work_by_class_id);
     PUSH_MOD(get_class_test_by_class_id);
+    PUSH_MOD(get_class_work_by_class_work_id);
+    PUSH_MOD(get_class_test_by_class_test_id);
+    PUSH_MOD(add_class_work_title);
+    PUSH_MOD(add_class_test_title);
+    PUSH_MOD(get_work_topic_by_class_work_id);
+    PUSH_MOD(get_test_topic_by_class_test_id);
+
+    PUSH_MOD(add_student_work_answer);
+    PUSH_MOD(add_student_test_answer);
 }
 
 PutControll::PutControll(){
